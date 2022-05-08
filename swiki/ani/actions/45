@@ -1,0 +1,1 @@
+book formatPageTemplate: (((page accessLevelForRequest: request) > 1)		ifTrue: ['newLinkShow']		ifFalse: ['newLinkHide'])	request: request response: response shelf: shelf page: page

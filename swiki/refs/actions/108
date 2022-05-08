@@ -1,0 +1,1 @@
+'<form action="', (request referenceShelf: shelf book: book page: page address: 'version'), '"><input type="hidden" name="id" value="', (page versionId asString), '"><input type="submit" value="', (page versionId asString), '"></form>'

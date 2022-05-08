@@ -1,0 +1,1 @@
+"Return a tab and cr delimited file of all the page names"response at: 'contentType' put: (MIMEDocument contentTypePlainText).String streamContents: [:stream | book pages do: [:page | stream	nextPutAll: page id asString;	tab;	nextPutAll: (page settingsAt: 'isText' ifAbsent: [true]) asString;	tab;	nextPutAll: page name;	cr]]

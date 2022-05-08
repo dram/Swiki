@@ -1,0 +1,1 @@
+<?xml version="1.0"?><security><default priv="Deny All" /><group priv="Allow All"><member><m type="password">password</m><m type="user">admin</m></member></group></security>

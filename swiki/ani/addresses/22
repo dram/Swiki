@@ -1,0 +1,1 @@
+"Sign out the request"request clearPassword.response at: 'headerStatus' put: #tempMoved.response at: 'location' put: (request referenceShelf: shelf book: book address: 'account').book formatBookTemplate: 'signOutSuccess' request: request response: response shelf: shelf

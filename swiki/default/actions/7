@@ -1,0 +1,1 @@
+(shelf modulesAt: 'colorScheme') button: 'comSwiki' link: 'http://minnow.cc.gatech.edu/swiki' alt: 'ComSwiki: powered by Squeak'

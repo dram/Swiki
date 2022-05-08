@@ -1,0 +1,7 @@
+This is the example show form that works with the edit form above. Note that just as the edit form has 3 fields (editText1, editText2, and editText3), this form has 3 fields (showText1, showText2, and showText3). They can be in any order:<br>
+<?renderText2?>
+then<br>
+<?renderText1?>
+and finally<br>
+<?renderText3?>
+for instance. Note that showText fields do not need the HTML textareas that the edit fields needed.

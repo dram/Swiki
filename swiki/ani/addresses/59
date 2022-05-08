@@ -1,0 +1,1 @@
+"Initialize parent"book pages do: [:page | page hasParent ifTrue: [	page parent: (book pages at: page parentId)]]."Initialize access control"book pages do: [:page | page initializeAccessControl]."Initialize e-mail alerts"book pages do: [:page |	page hasParent ifFalse: [page initializeAlertsBook: book]]

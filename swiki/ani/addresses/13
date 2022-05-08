@@ -1,0 +1,1 @@
+book formatBookTemplate: 'siteMap' request: request response: response shelf: shelf

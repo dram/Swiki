@@ -1,0 +1,1 @@
+String streamContents: [:stream |	HttpRequest allInstances do: [:i | stream		nextPutAll: (i url asString);		nextPutAll: '<br>';		nextPutAll: String crlf]].

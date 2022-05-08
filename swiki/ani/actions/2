@@ -1,0 +1,1 @@
+book formatPageAction: (request security	ifNil: ['showButtonsPublic']	ifNotNil: [(request settingsAt: 'isOwner')		ifTrue: ['showButtonsOwner']		ifFalse: ['showButtonsUser']])	request: request response: response shelf: shelf page: page

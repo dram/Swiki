@@ -1,0 +1,1 @@
+(shelf modulesAt: 'adminColorScheme') button: 'admintool'

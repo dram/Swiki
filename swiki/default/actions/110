@@ -1,0 +1,1 @@
+"Was the previous search a case sensitive search?If not, return checked."(request fieldsAsBooleanKey: 'casesensitive' ifAbsent: [false])	ifTrue: ['']	ifFalse: [' checked']

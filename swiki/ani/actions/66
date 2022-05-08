@@ -1,0 +1,1 @@
+(book modulesAt: 'colorScheme') button: 'signout' link: (request referenceShelf: shelf book: book address: 'signOut')

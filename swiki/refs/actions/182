@@ -1,0 +1,1 @@
+| alertSender |alertSender _ book settingsAt: 'alertSender'.(alertSender = '')	ifTrue: ['system administrator']	ifFalse: ['<a href="mailto:', (TextFormatter encodeToStrictXmlCrlf: alertSender), '">system administrator</a>']

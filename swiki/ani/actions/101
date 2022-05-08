@@ -1,0 +1,1 @@
+| uploads file |uploads _ book modulesAt: 'uploads'..(file _ uploads bannerRightImage)	ifNil: [nil]	ifNotNil: [Array with: uploads with: file with: (book pages at: 1) showStrictName]

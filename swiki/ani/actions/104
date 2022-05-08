@@ -1,0 +1,1 @@
+| users |users _ (shelf modulesAt: 'users') ownersOfBook: book.users _ users collect: [:user | user address].users _ users asSortedCollection: [:a :b | a asLowercase < b asLowercase].String streamContents: [:stream |	users do: [:user | stream		nextPutAll: (TextFormatter encodeToXmlCrlf: user);		nextPutAll: String crlf]]

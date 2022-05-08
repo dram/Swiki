@@ -1,0 +1,1 @@
+<?doctype?><html><head><title><?dirPath?></title><?endHead?></head><body<?colorScheme?>><?beforeButtons?><?showButtons?><?afterButtons?><h2><?dirPath?></h2><?fileList?><?endBody?></body></html>

@@ -1,0 +1,1 @@
+(request fieldsHasKey: 'formId')	ifTrue: ['<input type="hidden" value="', (request fieldsKey: 'formId'), '" name="formId">', String crlf]	ifFalse: ['']

@@ -1,0 +1,1 @@
+| spaceLeft |"Uploads Size is in Mb, not bytes"spaceLeft _ (book modulesAt: 'uploadsSize') - (book modulesAt: 'uploads') fileSize."Return it in words"SwikiFile fileSizeToWords: spaceLeft

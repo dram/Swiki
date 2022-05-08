@@ -1,0 +1,1 @@
+| filter |(filter _ shelf formatPrivAddress: 'adminFilter' request: request response: response)	ifNil: [shelf formatPrivAddress: 'admin' request: request response: response]	ifNotNil: [filter]

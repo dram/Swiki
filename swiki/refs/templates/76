@@ -1,0 +1,1 @@
+<table border=0 cellspacing=3 cellpadding=0><tr><td align=center><tt>&nbsp;&nbsp;true&nbsp;&nbsp;<br>(<?graphPercentT?>%)</tt></td><td><?graphTF?></td><td align=center><tt>&nbsp;&nbsp;false&nbsp;&nbsp;<br>(<?graphPercentF?>%)</tt></td><td>(<?graphVotes?> votes)</td></tr></table>

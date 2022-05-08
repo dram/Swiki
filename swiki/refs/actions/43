@@ -1,0 +1,1 @@
+(shelf settingsAt: 'fileServerPath'), (book modulesAt: 'colorScheme') directory httpPath

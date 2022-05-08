@@ -1,0 +1,1 @@
+<tr><td colspan=2 bgcolor="#cccccc"><b>Owner</b> (optional)</td></tr><tr><td><i>Owner</i><br>(name of owner)</td><td><input type="text" size=25 name="owner"></td></tr><tr><td><i>E-mail</i><br>(e-mail address of owner)</td><td><input type="text" size=25 name="address"></td></tr>

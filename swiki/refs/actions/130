@@ -1,0 +1,1 @@
+(book settingsAt: 'urlPrefix'), (request referenceShelf: shelf book: book), '/'

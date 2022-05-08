@@ -1,0 +1,1 @@
+| form content |form _ (request fieldsKey: 'form'), '-show'.content _ (book hasPageTemplate: form)	ifTrue: ["Edit Existing Edit Template"		book pageTemplateNamed: form]	ifFalse: ["Example Template"		book pageTemplateNamed: 'exampleShowForm'].TextFormatter encodeToStrictXmlCrlf: content

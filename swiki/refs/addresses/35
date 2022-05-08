@@ -1,0 +1,1 @@
+| template |template _ 'upload', ((page settingsAt: 'isText' ifAbsent: [true]) ifTrue: [''] ifFalse: ['Project']), ((page settingsAt: 'lock' ifAbsent: [false]) ifTrue: ['Locked'] ifFalse: ['Unlocked']).book formatPageTemplate: template request: request response: response shelf: shelf page: page

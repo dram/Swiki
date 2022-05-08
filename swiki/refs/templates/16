@@ -1,0 +1,1 @@
+<form action="<?toAppend?>" method=post><?hiddenFormId?><input type="hidden" value="<?appendId?>" name="appendId"><textarea name="append" rows=4 cols=70 wrap=virtual></textarea><br><input type="submit" value="add to the page"><br></form>

@@ -1,0 +1,1 @@
+(shelf modulesAt: 'adminColorScheme') formatTemplate: 'afterMenu' request: request response: response shelf: shelf

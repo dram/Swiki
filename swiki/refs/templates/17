@@ -1,0 +1,10 @@
+<table>
+<tr><td>How can forms (such as this form) be used in other swikis? Many people have commented that forms are a nice feature, but we don't have concrete suggestions on how to use them.<br>
+<textarea name="text1" rows=4 cols=30 wrap=virtual><?editText1?></textarea></td>
+<td>Name some neat projects that swiki can be used for. For instance, implementing a <i>Hitchhiker's Guide to the World</i> swiki might allow travelers to share their experiences.<br>
+<textarea name="text2" rows=4 cols=30 wrap=virtual><?editText2?></textarea></td></tr>
+</table>
+Do you like the Wiki concept? Why? What makes the concept so powerful?<br>
+<textarea name="text3" rows=4 cols=70 wrap=virtual><?editText3?></textarea><br>
+Miscellaneous Comments<br>
+<textarea name="text4" rows=4 cols=70 wrap=virtual><?editText4?></textarea><br>

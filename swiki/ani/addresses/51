@@ -1,0 +1,1 @@
+(shelf modulesAt: 'users') updateOwners: request response: response shelf: shelf book: book."Return forward to manageGroups"response	at: 'headerStatus' put: #tempMoved;	at: 'location' put: (request referenceShelf: shelf book: book address: 'manageGroups').book formatBookTemplate: 'ownersSuccess' request: request response: response shelf: shelf

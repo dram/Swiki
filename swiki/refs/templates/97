@@ -1,0 +1,1 @@
+<table class="inline" border=0 cellspacing=0 cellpadding=0><tr><td colspan=2><h3><a class="internal" href="<?toDefaultLocation?>" title="<?name?>: last edited <?timePast?> ago by <?user?>"><?name?></a></h3></td></tr><tr><td>&nbsp;&nbsp;&nbsp;</td><td><?showTextArea?></td></tr></table>

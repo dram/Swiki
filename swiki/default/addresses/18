@@ -1,0 +1,1 @@
+"Initialize users"| dir |dir _ (shelf storage dir directoryNamed: 'default') directoryNamed: 'users'.shelf modulesAt: 'users' put: (SwikiUsersModule onDir: dir)

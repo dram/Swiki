@@ -1,0 +1,1 @@
+| return |return _ Dictionary new.(book modulesAt: 'schemes') do: [:scheme |	return at: (scheme at: 1) put: scheme].book hasParent ifTrue: [(book parent formatPrivAddress: 'allSchemes' request: request response: response shelf: shelf) do: [:scheme | (return includesKey: (scheme at: 1)) ifFalse: [return at: (scheme at: 1) put: scheme]]].return values

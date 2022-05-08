@@ -1,0 +1,1 @@
+| text |text _ page textKey: '1'.text _ text copyUpTo: Character cr.text _ page showFormat: text request: request response: response shelf: shelf book: book.text _ (book settingsAt: 'rssFormatter') format: text request: request response: response shelf: shelf book: book page: page.TextFormatter encodeToXmlCrlf: text

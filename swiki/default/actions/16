@@ -1,0 +1,1 @@
+| name |((name _ shelf settingsAt: 'name' ifAbsent: ['']) = '')	ifTrue: ['this Site']	ifFalse: [TextFormatter encodeToXmlCrlf: name]

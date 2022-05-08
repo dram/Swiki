@@ -1,0 +1,1 @@
+book formatPageTemplate: 'editText' request: request response: response shelf: shelf page: (page copy text: request text)

@@ -1,0 +1,1 @@
+<?xml version="1.0"?><schemes><scheme name="survey" next="default"><form name="survey" type="text" /></scheme><scheme name="default" next="default"><form name="default" type="text" /></scheme><scheme name="example" next="example"><form name="exampleForm" type="text" /><form name="default" type="text" /></scheme></schemes>

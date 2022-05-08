@@ -1,0 +1,1 @@
+"Initialize file structure under the uploads directory"| dir |(book rawSettingsIncludes: 'uploadPath')	ifTrue: [		dir _ book storage dir directoryNamed: (book settingsAt: 'uploadPath').		book modulesAt: 'uploads' put: (SwikiDirectory onDir: dir)]	ifFalse: [		book rawModulesRemove: 'uploads']

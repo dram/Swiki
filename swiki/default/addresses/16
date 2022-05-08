@@ -1,0 +1,1 @@
+"Initialize file structure under the default/files directory"| dir filePath |dir _ (shelf storage dir directoryNamed: 'default') directoryNamed: (shelf settingsAt: 'filePath').shelf modulesAt: 'files' put: (SwikiDirectory onDir: dir)

@@ -1,0 +1,1 @@
+(book formatPageAction: 'embedSize' request: request response: response shelf: shelf page: page) x asString

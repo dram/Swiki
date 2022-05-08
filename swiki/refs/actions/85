@@ -1,0 +1,1 @@
+(page settingsIncludes: 'colorScheme')	ifTrue: [page settingsAt: 'colorScheme']	ifFalse: [book formatBookAction: 'colorScheme' request: request response: response shelf: shelf]

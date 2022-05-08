@@ -1,0 +1,1 @@
+(book modulesAt: 'colorScheme') button: 'help' link: (request referenceShelf: shelf book: book address: 'help#editing')

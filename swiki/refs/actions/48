@@ -1,0 +1,1 @@
+(request settingsIncludes: 'location')	ifTrue: [(request referenceShelf: shelf book: book page: page), '#', (PageFormatter toSafeLocation format: (request settingsAt: 'location'))]	ifFalse: [request referenceShelf: shelf book: book page: page]

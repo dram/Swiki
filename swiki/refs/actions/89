@@ -1,0 +1,1 @@
+request isFramesCapable	ifTrue: ['']	ifFalse: ['<br>']

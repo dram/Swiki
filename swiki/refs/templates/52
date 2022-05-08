@@ -1,0 +1,1 @@
+<?doctype?><html><head><title>Recent Changes to <?bookName?></title><?endHead?></head><body<?colorScheme?>><?beforeButtons?><?showButtons?><?afterButtons?><h2>Recent Changes to <?bookName?></h2><?recent?><?endBody?></body></html>

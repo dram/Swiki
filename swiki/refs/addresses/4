@@ -1,0 +1,1 @@
+book formatBookTemplate: 'recent' request: request response: response shelf: shelf

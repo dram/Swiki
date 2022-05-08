@@ -1,0 +1,1 @@
+(book modulesAt: 'colorScheme') altFor: 'historyhelp' ifAbsent: ['History']

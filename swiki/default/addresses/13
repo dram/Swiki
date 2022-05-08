@@ -1,0 +1,1 @@
+| dir |"Initialize Temp Directory"dir _ (shelf storage dir directoryNamed: 'default') directoryNamed: 'temp'.dir fileNames do: [:fName | dir deleteFileNamed: fName].shelf modulesAt: 'tempUploadDir' put: dir.shelf modulesAt: 'tempUploadValue' put: 0.

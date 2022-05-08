@@ -1,0 +1,1 @@
+| return |return _ ((((book modulesAt: 'uploads') directoryNamed: 'forms') filesAlphabetically select: [:i | i mimeType = 'application/x-squeak-project']) collect: [:i | i name copyUpTo: $.]) asSet.(book hasParent) ifTrue: [return addAll: (book parent formatPrivAddress: 'allProjectForms' request: request response: response shelf: shelf)].return asOrderedCollection

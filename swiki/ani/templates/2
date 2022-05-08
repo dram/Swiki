@@ -1,0 +1,1 @@
+<textarea name="text1" rows=20 cols=60 wrap=virtual><?editText1?></textarea><br><b>Menu</b><br><textarea name="text2" rows=7 cols=60 wrap=virtual><?editText2?></textarea><br><?inheritMenu?>

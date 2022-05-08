@@ -1,0 +1,1 @@
+| logFile |logFile _ shelf storage dir fileNamed: 'log.txt'.logFile setToEnd.shelf modulesAt: 'logFile' put: logFile.shelf books do: [:book |	((book setup at: 'logging' ifAbsent: ['none']) = 'site') ifTrue: [		book modulesAt: 'logFile' put: logFile]]

@@ -1,0 +1,1 @@
+request settingsAt: 'forwardURL' put: (request referenceShelf: shelf book: book page: page).request security	ifNil: [book formatBookTemplate: 'getAccess' request: request response: response shelf: shelf]	ifNotNil: [book formatBookTemplate: 'getAccessPassword' request: request response: response shelf: shelf]

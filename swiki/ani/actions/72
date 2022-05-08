@@ -1,0 +1,1 @@
+String streamContents: [:stream | stream	nextPutAll: '(<a href="';	nextPutAll: (request referenceShelf: shelf book: book page: page address: 'diff');	nextPutAll: '?id=';	nextPutAll: (page versionId asString);	nextPutAll: '">+/-</a>)']

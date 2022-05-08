@@ -1,0 +1,1 @@
+<form action="<?toNew?>"><input type="hidden" name="name" value="<?newSendName?>"><b><?newShowName?>:</b>&nbsp;<input type="submit" value="create"><?createType?></form>

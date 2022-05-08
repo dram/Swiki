@@ -1,0 +1,1 @@
+PageFormatter toSafeAlias: (request settingsAt: 'pageEntry')

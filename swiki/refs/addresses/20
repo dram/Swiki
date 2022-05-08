@@ -1,0 +1,1 @@
+(page settingsAt: 'isText' ifAbsent: [true])	ifTrue: [book formatPageTemplate: 'history' request: request response: response shelf: shelf page: page]	ifFalse: [book formatPageTemplate: 'historyProject' request: request response: response shelf: shelf page: page]

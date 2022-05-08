@@ -1,0 +1,1 @@
+(request address = 'default')	ifTrue: [book formatPageTemplate: 'view' request: request response: response shelf: shelf page: page]	ifFalse: [response at: 'headerStatus' put: #notFound.		book formatBookTemplate: 'addressNotFound' request: request response: response shelf: shelf]

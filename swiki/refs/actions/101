@@ -1,0 +1,1 @@
+| nextVersion |nextVersion _ request settingsAt: 'nextVersion'.(nextVersion versionId = 0)	ifTrue: ['']	ifFalse: ['<td><form action="', (request referenceShelf: shelf book: book page: page address: 'version'), '"><input type="hidden" name="id" value="', (nextVersion versionId asString), '"><input type="submit" value="&gt;&gt;&gt;"></form></td>']

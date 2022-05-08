@@ -1,0 +1,1 @@
+| month |month _ (request settingsAt: 'month') next.String streamContents: [:stream | stream	nextPutAll: '<a href="';	nextPutAll: (request referenceShelf: shelf book: book page: page);	nextPutAll: '?month=';	nextPutAll: month monthIndex asString;	nextPutAll: '&amp;year=';	nextPutAll: month year asString;	nextPutAll: '">&gt;</a>']

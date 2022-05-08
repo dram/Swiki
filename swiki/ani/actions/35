@@ -1,0 +1,1 @@
+(request security settingsAt: 'sendAlerts' ifAbsent: [true])	ifTrue: [' checked']	ifFalse: ['']

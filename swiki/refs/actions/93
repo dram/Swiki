@@ -1,0 +1,1 @@
+(book modulesAt: 'colorScheme') formatTemplate: 'bar' request: request response: response shelf: shelf book: book

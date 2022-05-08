@@ -1,0 +1,1 @@
+(book setup at: 'visible' ifAbsent: [true])	ifTrue: [book setup at: 'searchable' ifAbsent: [true]]	ifFalse: [false]

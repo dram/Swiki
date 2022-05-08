@@ -1,0 +1,1 @@
+| agent |agent _ [request raw header at: 'user-agent' ifAbsent: ['']] ifError: [:a :b | ''].((agent findString: 'windows' startingAt: 1 caseSensitive: false) > 0)	ifTrue: ['style_win.css']	ifFalse: [((agent findString: 'msie' startingAt: 1 caseSensitive: false) > 0)		ifTrue: ['style_win.css']		ifFalse: ['style.css']]

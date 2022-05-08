@@ -1,0 +1,1 @@
+"Returns a point as to how large the EMBED area should be"page settingsAt: 'size' ifAbsent: [book formatBookAction: 'embedSize' request: request response: response shelf: shelf]

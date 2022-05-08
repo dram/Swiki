@@ -1,0 +1,1 @@
+TextFormatter encodeToXmlCrlf: (shelf settingsAt: 'badContent' ifAbsent: [''])

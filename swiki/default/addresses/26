@@ -1,0 +1,1 @@
+shelf modulesAt: 'rss' put: (SwikiRSSModule newModule)

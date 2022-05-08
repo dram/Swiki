@@ -1,0 +1,1 @@
+"Delete the history of the page"page wipe."Send back to the history page"response at: 'headerStatus' put: #tempMoved.response at: 'location' put: (request referenceShelf: shelf book: book page: page address: 'history').book formatPageTemplate: 'historyDeleteSuccess' request: request response: response shelf: shelf page: page

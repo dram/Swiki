@@ -1,0 +1,1 @@
+| versionIdString |versionIdString _ (request settingsAt: 'oldVersion') versionId asString.'<td><form action="', (request referenceShelf: shelf book: book page: page address: 'version'), '"><input type="hidden" name="id" value="', versionIdString, '"><input type="submit" value="Version ', versionIdString, '"></form></td>'

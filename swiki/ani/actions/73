@@ -1,0 +1,1 @@
+book formatPageAction: (((page accessLevelForRequest: request) > 2)		ifTrue: ['calendarRowsEdit']		ifFalse: ['calendarRowsView'])	request: request response: response shelf: shelf page: page

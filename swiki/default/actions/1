@@ -1,0 +1,1 @@
+"Delete security.xml file"book storage dir deleteFileNamed: 'security.xml' ifAbsent: []."Remove security module"book modulesAt: 'security' put: nil.response	at: 'headerStatus' put: #tempMoved;	at: 'location' put: (request referenceShelf: shelf address: ('admin/security?book=', book name)).shelf formatShelfTemplate: 'location' request: request response: response

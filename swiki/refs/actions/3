@@ -1,0 +1,1 @@
+(request settingsIncludes: 'alias')	ifTrue: [request settingsAt: 'alias']	ifFalse: [(request settingsIncludes: 'location')		ifTrue: [page showName, ' (', (PageFormatter toSafeAlias: (request settingsAt: 'location')), ')']		ifFalse: [page showName]]

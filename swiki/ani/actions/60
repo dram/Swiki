@@ -1,0 +1,1 @@
+'[<a href="', (request referenceShelf: shelf book: book address: 'help#about'), '">more</a>]'

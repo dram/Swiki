@@ -1,0 +1,1 @@
+| template |request raw setCookieName: #aniPasswords value: 'joey' path: (request referenceShelf: shelf book: book address: '/').template _ (request settingsAt: 'isOwner')	ifTrue: ['editOwner']	ifFalse: [request security		ifNil: ['editPublic']		ifNotNil: ['editUser']].book formatPageTemplate: template request: request response: response shelf: shelf page: page

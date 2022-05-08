@@ -1,0 +1,1 @@
+| user |(user _ page settingsAt: 'userId' ifAbsent: [nil])	ifNil: [page user]	ifNotNil: [user _ (shelf modulesAt: 'users') userAtId: user.		TextFormatter encodeToStrictXmlCrlf: user name]

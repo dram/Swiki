@@ -1,0 +1,1 @@
+request settingsRemove: 'alias'.book formatBookAction: 'siteMap' request: request response: response shelf: shelf

@@ -1,0 +1,1 @@
+(page settingsIncludes: 'template')	ifTrue: [book formatPageTemplate: ((page settingsAt: 'template'), '-render') request: request response: response shelf: shelf page: page]	ifFalse: [book formatPageAction: 'renderText' request: request response: response shelf: shelf page: page]

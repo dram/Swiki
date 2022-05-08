@@ -1,0 +1,1 @@
+shelf hasAni	ifTrue: [shelf formatShelfTemplate: 'createAniOptions' request: request response: response]	ifFalse: ['']

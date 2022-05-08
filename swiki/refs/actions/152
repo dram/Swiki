@@ -1,0 +1,1 @@
+"Was the previous search searching in an AND manner?If so, return checked."(request fieldsAsBooleanKey: 'and' ifAbsent: [true])	ifTrue: [' checked']	ifFalse: ['']

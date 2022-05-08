@@ -1,0 +1,1 @@
+"determine security level"(shelf modulesAt: 'users') processRequest: request."process the request"book formatPrivAddress: (request security	ifNil: ['processPublic']	ifNotNil: [(request security isOwnerOfBook: book)		ifTrue: ['processOwner']		ifFalse: ['processUser']])	request: request response: response shelf: shelf

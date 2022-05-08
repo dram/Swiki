@@ -1,0 +1,1 @@
+<tr><td><a href="<?toVersion?>"><?thumbnail?></a></td><td><table border=0 cellspacing=2 cellpadding=0><tr><td>Name:&nbsp;&nbsp;</td><td><?name?></td></tr><tr><td>User:&nbsp;&nbsp;</td><td><?user?></td></tr><tr><td>Date:&nbsp;&nbsp;</td><td><?date?></td></tr><tr><td>Time:&nbsp;&nbsp;</td><td><?time?></td></tr></table></td></tr>

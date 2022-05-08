@@ -1,0 +1,1 @@
+| filter |(filter _ book formatPrivAddress: 'filterAdmin' request: request response: response shelf: shelf)	ifNil: [book formatPageTemplate: 'forms' request: request response: response shelf: shelf page: page]	ifNotNil: [filter]

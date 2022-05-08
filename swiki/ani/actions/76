@@ -1,0 +1,1 @@
+TextFormatter decodeFromXmlCrlf: (((page accessLevelForRequest: request) > 2)	ifTrue: [(request settingsAt: 'options') at: 'private' ifAbsent: ['']]	ifFalse: [(request settingsAt: 'options') at: 'public' ifAbsent: ['']])

@@ -1,0 +1,1 @@
+request settingsAt: 'forwardURL' ifAbsent: [request referenceShelf: shelf book: book]

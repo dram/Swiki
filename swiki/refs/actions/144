@@ -1,0 +1,1 @@
+(page id = 1)	ifTrue: ['Top of the Swiki']	ifFalse: ['<a href="1.html">Top of the Swiki</a>']

@@ -1,0 +1,1 @@
+"Close the Individual Log File"(book setup at: 'logging' ifAbsent: ['none']) caseOf: {	['none']->[book modulesRemove: 'logFile'].	['individual']->[		(book modulesAt: 'logFile') close.		book modulesRemove: 'logFile'].	['site']->["Do nothing"]}	otherwise: [shelf error: 'That is not a valid value for logging']

@@ -1,0 +1,1 @@
+book formatBookTemplate: 'helpEditingHints' request: request response: response shelf: shelf

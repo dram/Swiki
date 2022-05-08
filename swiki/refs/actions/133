@@ -1,0 +1,1 @@
+| filePath |filePath _ (shelf settingsAt: 'fileServerPath'), 'plug-in/LoadProject.sts'.(filePath beginsWith: '/') ifTrue: [	filePath _ (book settingsAt: 'urlPrefix' ifAbsent: ['']), filePath].filePath

@@ -1,0 +1,1 @@
+"Establish maximum image width for main area"(book modulesAt: 'colorScheme') formatTemplate: 'viewBetween' request: request response: response shelf: shelf book: book page: page

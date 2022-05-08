@@ -1,0 +1,1 @@
+(request fieldsHasKey: 'appendId')	ifTrue: [book formatPageTemplate: 'appendHere' request: request response: response shelf: shelf page: page]	ifFalse: [response at: 'headerStatus' put: #notFound.		book formatBookTemplate: 'addressNotFound' request: request response: response shelf: shelf]

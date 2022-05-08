@@ -1,0 +1,1 @@
+request settingsAt: 'graphName' put: 'Shakespeare'.request settingsAt: 'data' put: #(150 874).book formatPageTemplate: 'graphTF' request: request response: response shelf: shelf page: page

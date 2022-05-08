@@ -1,0 +1,1 @@
+(request settingsAt: 'isOwner')	ifTrue: ['"view", "viewlock", "edit", "editlock", "upload", "history", "print", "recent", "search", "account", "forgot", "signout", "home", "looks", "help"']	ifFalse: ['"view", "viewlock", "edit", "editlock", "upload", "uploadlock", "history", "print", "recent", "search", "account", "forgot", "signout", "home", "help"']

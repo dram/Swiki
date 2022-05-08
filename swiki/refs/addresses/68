@@ -1,0 +1,1 @@
+OrderedCollection new	add: 'none';	add: '3 Mb';	add: '10 Mb';	add: '20 Mb';	add: '50 Mb';	add: '100 Mb';	add: '200 Mb';	add: '500 Mb';	add: '1 Gb';	add: '2 Gb';	add: '5 Gb';	add: '10 Gb';	yourself

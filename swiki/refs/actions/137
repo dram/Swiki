@@ -1,0 +1,1 @@
+"Save the size from a request"| sizeString width height |sizeString _ request fieldsKey: 'size' ifAbsent: [nil].((book formatPrivAddress: 'sizes' request: request response: response shelf: shelf) includes: sizeString) ifTrue: [	width _ (sizeString copyUpTo: $ ) asInteger.	height _ (sizeString copyAfterLast: $ ) asInteger.	page settingsAt: 'embedSize' put: width@height]

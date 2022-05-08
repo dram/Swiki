@@ -1,0 +1,1 @@
+(book modulesAt: 'colorScheme') formatTemplate: 'afterButtons' request: request response: response shelf: shelf book: book

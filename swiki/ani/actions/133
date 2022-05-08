@@ -1,0 +1,1 @@
+book formatPageAction: (page hasParent ifTrue: ['alertsParent'] ifFalse: ['alertsNoParent']) request: request response: response shelf: shelf page: page

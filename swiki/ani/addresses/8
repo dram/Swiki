@@ -1,0 +1,1 @@
+| template |template _ (request settingsAt: 'isOwner')	ifTrue: ['uploadOwner']	ifFalse: ['uploadOther'].book formatPageTemplate: template request: request response: response shelf: shelf page: page

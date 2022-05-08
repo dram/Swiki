@@ -1,0 +1,2 @@
+This is an example edit form. The below creates a text area:<br><textarea name="text1" rows=4 cols=70 wrap=virtual><?editText1?></textarea><br>The most important thing to notice is that the name (text1) corresponds to the content of the textarea (editText1) in number (i.e. 1). Other text areas should follow in sequential order (2, 3, 4, etc.), like below:<br><textarea name="text2" rows=4 cols=70 wrap=virtual><?editText2?></textarea><br>and<br>
+<textarea name="text3" rows=4 cols=70 wrap=virtual><?editText3?></textarea><br>

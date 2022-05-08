@@ -1,0 +1,1 @@
+| value |value _ request settingsAt: 'show'.'<input type="text" size=50 name="', (value at: 1), '" value="', (TextFormatter encodeToStrictXmlCrlf: (value at: 3)), '">'

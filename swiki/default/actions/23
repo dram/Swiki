@@ -1,0 +1,1 @@
+(shelf modulesAt: 'adminColorScheme') formatTemplate: 'beforeButtons' request: request response: response shelf: shelf

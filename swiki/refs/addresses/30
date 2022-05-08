@@ -1,0 +1,1 @@
+(book rawSettingsIncludes: 'renderPath')	ifTrue: [book modulesAt: 'renderDir' put: (book storage dir directoryNamed: (book settingsAt: 'renderPath'))]	ifFalse: [book rawModulesRemove: 'renderDir']

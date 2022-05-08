@@ -1,0 +1,1 @@
+book settingsAt: 'pluginUrl' ifAbsent: ['']

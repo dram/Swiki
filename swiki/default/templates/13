@@ -1,0 +1,1 @@
+<?doctype?><html><head><title>Swikis on <?name?></title></head><body<?colorScheme?>><h2>Swikis on <?name?></h2><?swikiListing?><?logo?></body></html>

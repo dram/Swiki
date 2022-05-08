@@ -1,0 +1,1 @@
+(page settingsIncludes: 'template')	ifTrue: [book formatPageTemplate: ((page settingsAt: 'template'), '-edit') request: request response: response shelf: shelf page: (page copy text: request text)]	ifFalse: [book formatPageTemplate: 'requestText' request: request response: response shelf: shelf page: page]

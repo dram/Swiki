@@ -1,0 +1,1 @@
+<form action="<?toUpdateSecurity?>" method=post><?editSecurity?><input type="submit" value="update security"></form><form action="<?toDeleteSecurity?>" method=post><input type="submit" value="delete security"></form>

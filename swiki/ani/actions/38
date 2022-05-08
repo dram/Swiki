@@ -1,0 +1,1 @@
+(request settingsAt: 'isOwner')	ifTrue: [book formatBookTemplate: 'accountOwner' request: request response: response shelf: shelf]	ifFalse: ['']

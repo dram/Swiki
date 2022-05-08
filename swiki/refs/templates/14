@@ -1,0 +1,1 @@
+<?doctype?><html><head><title><?name?></title><?endHead?></head><body<?colorScheme?>><?beforeButtons?><?showButtons?><?afterButtons?><h2><?name?></h2><?showTextArea?><?references?><?endBody?></body></html>

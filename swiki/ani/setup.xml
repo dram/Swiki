@@ -1,0 +1,1 @@
+<?xml version="1.0"?><setup><s name="inheritable" type="boolean">true</s><s name="accessible" type="boolean">false</s><s name="searchable" type="boolean">false</s><s name="parent" type="text">refs</s><s name="logging" type="text">none</s><s name="visible" type="boolean">false</s></setup>

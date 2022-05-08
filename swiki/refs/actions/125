@@ -1,0 +1,1 @@
+(page versionId = 0)	ifTrue: [request referenceShelf: shelf book: book page: page]	ifFalse: [(request referenceShelf: shelf book: book page: page address: 'version'), '?id=', page versionId asString]

@@ -1,0 +1,1 @@
+"Filter for IP"((shelf modulesAt: 'badIPs') includes: request user)	ifTrue: ["This is a bad user who is not authorized"		response at: 'contentType' put: MIMEDocument contentTypePlainText.		'You are unauthorized to access this site.']	ifFalse: [nil]

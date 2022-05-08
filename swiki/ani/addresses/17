@@ -1,0 +1,1 @@
+(book rawSettingsIncludes: 'colorScheme')	ifTrue: [book modulesAt: 'colorScheme' put: ((shelf modulesAt: 'colorSchemesAni') at: (book settingsAt: 'colorScheme'))]	ifFalse: [book rawModulesRemove: 'colorScheme']

@@ -1,0 +1,1 @@
+(request raw header isKindOf: Dictionary)	ifTrue: [(request raw header includesKey: 'host')		ifTrue: ['http://', (request raw header at: 'host'), (request raw url)]		ifFalse: ['not available']]	ifFalse: ['not available']

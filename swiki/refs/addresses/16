@@ -1,0 +1,1 @@
+"Create rendered"book storage dir createDirectory: 'rendered'.book settingsAt: 'renderPath' put: 'rendered'."Return Success"true

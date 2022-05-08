@@ -1,0 +1,1 @@
+| appendId |appendId _ 1 + (request settingsAt: 'appendId' ifAbsent: [0]).request settingsAt: 'appendId' put: appendId.appendId asString

@@ -1,0 +1,1 @@
+| sizeString width height |(book rawSettings includesKey: 'embedSize') ifTrue: [	sizeString _ book settingsAt: 'embedSize'.	width _ (sizeString copyUpTo: $ ) asInteger.	height _ (sizeString copyAfterLast: $ ) asInteger.	book modulesAt: 'embedSize' put: width@height]

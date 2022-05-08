@@ -1,0 +1,1 @@
+book modulesAt: 'schemes' put: ((book storage dir fileExists: 'schemes.xml')	ifTrue: [SwikiSchemeReadWriter xmlToSchemes: (book storage dir fileNamed: 'schemes.xml') contentsOfEntireFile]	ifFalse: [OrderedCollection new])

@@ -1,0 +1,1 @@
+book formatPageAction: 'embedHeight' request: request response: response shelf: shelf page: (request settingsAt: 'version')

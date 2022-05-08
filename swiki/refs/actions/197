@@ -1,0 +1,1 @@
+(page settingsAt: 'isText' ifAbsent: [true])	ifTrue: [request referenceShelf: shelf book: book page: page address: 'edit']	ifFalse: [request referenceShelf: shelf book: book page: page]

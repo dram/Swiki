@@ -1,0 +1,1 @@
+<form><h3>Edit Text</h3><?editTextArea?><h3>Alerts Went To</h3><textarea rows=3 cols=70 wrap=virtual><?alerts?></textarea></form>

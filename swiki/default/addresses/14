@@ -1,0 +1,1 @@
+"Close the Site Log File"shelf books do: [:book | ((book setup at: 'logging' ifAbsent: ['none']) = 'site')	ifTrue: [book rawModulesRemove: 'logFile']].(shelf modulesAt: 'logFile') close."Remove Book Color Schemes"shelf books do: [:book |	book rawModulesRemove: 'colorScheme']

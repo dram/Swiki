@@ -1,0 +1,1 @@
+| version |version _ request settingsAt: 'version'.(version versionId = 1)	ifTrue: ['']	ifFalse: ['<td><form action="', (request referenceShelf: shelf book: book page: page address: 'version'), '"><input type="hidden" name="id" value="', (version versionId - 1) asString, '"><input type="submit" value="&lt;&lt;&lt;"></form></td>']

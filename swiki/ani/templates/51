@@ -1,0 +1,1 @@
+<tr><td align=right class="<?bgColor?>"><?versionHistory?></td><td class="<?bgColor?>"><?diffHistory?>&nbsp;&nbsp;</td><td class="<?bgColor?>"><?name?>&nbsp;&nbsp;</td><td class="<?bgColor?>"><?user?>&nbsp;&nbsp;</td><td align=right class="<?bgColor?>"><?date?></td><td align=right class="<?bgColor?>">&nbsp;&nbsp;<?time?></td></tr>

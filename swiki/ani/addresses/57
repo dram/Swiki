@@ -1,0 +1,1 @@
+| dir |dir _ book storage dir directoryNamed: 'groups'.book modulesAt: 'groups' put: (AniGroupsModule onDir: dir)
