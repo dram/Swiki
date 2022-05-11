@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 11 May 2022 at 8:06:16 am'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 11 May 2022 at 9:10:43 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -8303,7 +8303,7 @@ aniAllowViewPage: aSwikiPage
 		self aniAllowViewPage: (self pages at:
 			(aSwikiPage settingsAt: 'parent' ifAbsent: [^true]))]! !
 
-!SwikiBook methodsFor: 'utility AniAniWeb'!
+!SwikiBook methodsFor: 'utility AniAniWeb' stamp: 'xw 5/11/2022 21:09'!
 aniChangeParent: aSwikiPage to: newParentId
 	"On error, do nothing"
 	| parent |
@@ -8320,7 +8320,6 @@ aniChangeParent: aSwikiPage to: newParentId
 		aSwikiPage settingsAt: 'parent' put: newParentId.
 		aSwikiPage parent: parent.
 		"update access control"
-		self halt.
 		aSwikiPage inheritsAccessControl ifFalse: [
 			aSwikiPage accessControl: parent accessControl]]! !
 
