@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 11 May 2022 at 9:10:43 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 12 May 2022 at 8:23:19 am'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -4702,11 +4702,11 @@ isOlderThan: anotherEntry
 isValid
 	^true! !
 
-!SwikiEntry methodsFor: 'initialization'!
-fromArray: arr
-	name _ arr at: 1.
-	creationTime _ arr at: 2.
-	modificationTime _ arr at: 3.! !
+!SwikiEntry methodsFor: 'initialization' stamp: 'xw 5/11/2022 21:58'!
+fromDirectoryEntry: entry
+	name := entry name.
+	creationTime := entry creationTime.
+	modificationTime := entry modificationTime.! !
 
 
 !SwikiDirectory methodsFor: 'accessing'!
@@ -4902,11 +4902,11 @@ deleteFileNamed: fileName
 		fileServeCache removeKey: version httpName].
 	fileRefsCache removeKey: fileName! !
 
-!SwikiDirectory methodsFor: 'file operations'!
+!SwikiDirectory methodsFor: 'file operations' stamp: 'xw 5/11/2022 22:10'!
 fileEntries
-	^(dir entries select: [:arr | (arr at: 4) not and: [(arr at: 1) ~= '.aliases']]) collect: [:arr | SwikiFile fromArray: arr onDir: dir]! !
+	^(dir entries select: [:entry | (entry isDirectory) not and: [(entry name) ~= '.aliases']]) collect: [:entry | SwikiFile fromDirectoryEntry: entry onDir: dir]! !
 
-!SwikiDirectory methodsFor: 'file operations'!
+!SwikiDirectory methodsFor: 'file operations' stamp: 'xw 5/11/2022 22:13'!
 moveFileNamed: fullPath toFileName: fileName
 	| rootName actualFileName versions entry fromFile toFile |
 	rootName _ self class rootNameFor: fileName.
@@ -4925,7 +4925,7 @@ moveFileNamed: fullPath toFileName: fileName
 		toFile close.
 		FileDirectory deleteFilePath: fullPath].
 	"Get and Add Entry"
-	entry _ SwikiFile fromArray: (dir entryAt: actualFileName) onDir: dir.
+	entry := SwikiFile fromDirectoryEntry: (dir entryAt: actualFileName) onDir: dir.
 	self addToFileRefsCache: entry at: rootName.
 	self addToFileServeCache: entry at: entry name.
 	"Return Versions"
@@ -4981,22 +4981,22 @@ initialize
 	self initializeDirectories.
 	self initializeFiles! !
 
-!SwikiDirectory methodsFor: 'initialization'!
+!SwikiDirectory methodsFor: 'initialization' stamp: 'xw 5/11/2022 22:15'!
 initializeDirectories
 	| subSwikiDir |
 	"Initialize Caches"
 	dirServeCache _ Dictionary new.
 	dirRefsCache _ Dictionary new.
 	"Add subSwikiDirs"
-	(dir entries select: [:entry | entry at: 4]) do: [:arr |
-		subSwikiDir _ SwikiSubDirectory fromArray: arr onDir: (dir directoryNamed: (arr at: 1)) containingDirectory: self.
+	(dir entries select: [:entry | entry isDirectory]) do: [:entry |
+		subSwikiDir := SwikiSubDirectory fromDirectoryEntry: entry onDir: (dir directoryNamed: (entry name)) containingDirectory: self.
 		"dirRefsCache"
 		self addToDirRefsCache: subSwikiDir at: subSwikiDir name]! !
 
-!SwikiDirectory methodsFor: 'initialization'!
+!SwikiDirectory methodsFor: 'initialization' stamp: 'xw 5/11/2022 22:13'!
 initializeFileNamed: fileName
 	| entry aliasDict rootName |
-	entry _ SwikiFile fromArray: (self dir directoryEntryFor: fileName) onDir: self dir.
+	entry := SwikiFile fromDirectoryEntry: (self dir directoryEntryFor: fileName) onDir: self dir.
 	aliasDict _ self aliasDict.
 	rootName _ entry rootName.
 	(entry name = rootName)
@@ -5039,12 +5039,12 @@ addToFileRefsCache: entry at: fullName
 addToFileServeCache: entry at: key
 	fileServeCache at: key put: entry! !
 
-!SwikiDirectory methodsFor: 'cacheing'!
+!SwikiDirectory methodsFor: 'cacheing' stamp: 'xw 5/11/2022 22:15'!
 directoryNamed: dirName
 	| subSwikiDir |
 	^self directoryNamed: dirName ifAbsent: ["Create One"
 		dir createDirectory: dirName.
-		subSwikiDir _ SwikiSubDirectory fromArray: (dir entryAt: dirName) onDir: (dir directoryNamed: dirName) containingDirectory: self.
+		subSwikiDir := SwikiSubDirectory fromDirectoryEntry: (dir entryAt: dirName) onDir: (dir directoryNamed: dirName) containingDirectory: self.
 		self addToDirRefsCache: subSwikiDir at: subSwikiDir name.
 		subSwikiDir]! !
 
@@ -5083,22 +5083,22 @@ validFileNameFromFileLocation: aString
 		"No HTML/HTTP characters allowed"
 		'&<>"?*' includes: i]! !
 
-!SwikiEntry class methodsFor: 'instance creation'!
-fromArray: arr
-	^self basicNew fromArray: arr! !
+!SwikiEntry class methodsFor: 'instance creation' stamp: 'xw 5/11/2022 21:58'!
+fromDirectoryEntry: entry
+	^self basicNew fromDirectoryEntry: entry! !
 
 
-!SwikiDirectory class methodsFor: 'instance creation'!
-fromArray: arr onDir: dir
+!SwikiDirectory class methodsFor: 'instance creation' stamp: 'xw 5/11/2022 22:11'!
+fromDirectoryEntry: entry onDir: dir
 	| instance |
-	instance _ self fromArray: arr.
+	instance := self fromDirectoryEntry: entry.
 	instance dir: dir.
 	instance initialize.
 	^instance! !
 
-!SwikiDirectory class methodsFor: 'instance creation'!
+!SwikiDirectory class methodsFor: 'instance creation' stamp: 'xw 5/11/2022 22:14'!
 onDir: dir
-	^self fromArray: (dir containingDirectory entryAt: (dir pathParts last)) onDir: dir! !
+	^self fromDirectoryEntry: (dir containingDirectory entryAt: (dir pathParts last)) onDir: dir! !
 
 
 !SwikiFile methodsFor: 'accessing'!
@@ -5143,10 +5143,10 @@ versions: aSwikiFileVersions
 dir: dir mimeType: mimeType
 	"Sub-classes can overwrite this"! !
 
-!SwikiFile methodsFor: 'initialization'!
-fromArray: arr
-	super fromArray: arr.
-	fileSize _ arr at: 5.! !
+!SwikiFile methodsFor: 'initialization' stamp: 'xw 5/11/2022 21:58'!
+fromDirectoryEntry: entry
+	super fromDirectoryEntry: entry.
+	fileSize := entry fileSize.! !
 
 
 !SwikiFile class methodsFor: 'initialize-release'!
@@ -5165,14 +5165,14 @@ fileSizeToWords: numberOfBytes
 	(numberOfBytes < 10000000) ifTrue: [^((numberOfBytes // 100000) / 10) asFloat asString, ' Mb'].
 	^(numberOfBytes // 1000000) asString, ' Mb'! !
 
-!SwikiFile class methodsFor: 'instance creation'!
-fromArray: arr onDir: dir
+!SwikiFile class methodsFor: 'instance creation' stamp: 'xw 5/11/2022 22:11'!
+fromDirectoryEntry: entry onDir: dir
 	| mime instance |
-	mime _ MIMEDocument guessTypeFromName: (arr at: 1).
-	instance _ (MimeToClass at: mime ifAbsent: [SwikiFile]) fromArray: arr.
+	mime := MIMEDocument guessTypeFromName: (entry name).
+	instance := (MimeToClass at: mime ifAbsent: [SwikiFile]) fromDirectoryEntry: entry.
 	instance dir: dir mimeType: mime.
 	instance isValid ifFalse: [
-		instance _ SwikiFile fromArray: arr.
+		instance := SwikiFile fromDirectoryEntry: entry.
 		instance dir: dir mimeType: mime].
 	^instance! !
 
@@ -9054,10 +9054,10 @@ addToDirServeCache: aSubSwikiDir at: key
 	containingDirectory addToDirServeCache: aSubSwikiDir at: (self localHttpPath, key)! !
 
 
-!SwikiSubDirectory class methodsFor: 'instance creation'!
-fromArray: arr onDir: dir containingDirectory: aSwikiDirectory
+!SwikiSubDirectory class methodsFor: 'instance creation' stamp: 'xw 5/11/2022 22:12'!
+fromDirectoryEntry: entry onDir: dir containingDirectory: aSwikiDirectory
 	| instance |
-	instance _ self fromArray: arr.
+	instance := self fromDirectoryEntry: entry.
 	instance dir: dir.
 	instance containingDirectory: aSwikiDirectory.
 	instance initialize.
