@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 12 May 2022 at 9:29:57 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 13 May 2022 at 7:58:26 am'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -4922,9 +4922,9 @@ moveVersions: versions to: newDir
 	versions do: [:file |
 		newDir moveFileNamed: (dir fullNameFor: file name) toFileName: versions name]! !
 
-!SwikiDirectory methodsFor: 'file operations'!
+!SwikiDirectory methodsFor: 'file operations' stamp: 'xw 5/13/2022 07:52'!
 readOnlyFile: aSwikiFile
-	^self dir readOnlyFileNamed: aSwikiFile name! !
+	^ StandardFileStream readOnlyFileNamed: (self dir fullNameFor: aSwikiFile name)! !
 
 !SwikiDirectory methodsFor: 'file operations'!
 thumbnailOf: versions size: size
