@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 12 May 2022 at 8:23:19 am'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 12 May 2022 at 9:29:57 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -2824,20 +2824,6 @@ pushBack: aString
 	pos _ self inStream position.
 	inStream _ ReadStream on: (aString , self inStream contents).
 	inStream position: pos! !
-
-!SocketStream methodsFor: 'private'!
-receiveData
-	| buffer bytesRead |
-
-	buffer _ String new: self bufferSize.
-
-	bytesRead := self shouldTimeout
-		ifTrue: [self socket receiveDataTimeout: self timeout into: buffer]
-		ifFalse: [self socket receiveDataInto: buffer].
-	bytesRead = 0
-		ifTrue: ["Close the socket if it times out; perhaps it should signal it instead"
-			self socket closeAndDestroy]
-		ifFalse: [inStream := ReadStream on: (self inStream upToEnd , (buffer copyFrom: 1 to: bytesRead))]! !
 
 
 !SwikiBrowser methodsFor: 'accessing'!
