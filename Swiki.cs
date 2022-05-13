@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 13 May 2022 at 7:58:26 am'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 13 May 2022 at 9:06:15 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -5432,7 +5432,7 @@ processHttpRequest: rawRequest
 	shelf process: request response: response.
 	^self responseFrom: response! !
 
-!SwikiModule methodsFor: 'processing'!
+!SwikiModule methodsFor: 'processing' stamp: 'xw 5/13/2022 21:05'!
 responseFrom: dict 
 	| response content |
 	response _ HttpResponse new.
@@ -5462,7 +5462,7 @@ responseFrom: dict
 	content _ dict at: 'content'.
 	(content isKindOf: String)
 		ifTrue: [response contents: (ReadStream on: content)]
-		ifFalse: [(content isKindOf: BlockContext)
+		ifFalse: [(content isKindOf: BlockClosure)
 			ifTrue: [response _ response asHttpPartialResponseBlock: content]
 			ifFalse: [response contents: content]].
 	"return the response to be served"
