@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 14 May 2022 at 9:15:23 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 14 May 2022 at 10:11:15 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -2359,24 +2359,6 @@ sendData: aStringOrByteArray
 
 	^ bytesSent
 ! !
-
-
-!SocketStream methodsFor: 'stream in'!
-nextChunk
-	"getData front - retrieve all data available now"
-	| return |
-	self inStream atEnd
-		ifTrue: [self receiveData].
-	return _ inStream upToEnd.
-	self resetInStream.
-	^return! !
-
-!SocketStream methodsFor: 'private'!
-pushBack: aString
-	| pos |
-	pos _ self inStream position.
-	inStream _ ReadStream on: (aString , self inStream contents).
-	inStream position: pos! !
 
 
 !SwikiBrowser methodsFor: 'accessing'!
