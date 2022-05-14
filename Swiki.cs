@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 13 May 2022 at 9:06:15 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 14 May 2022 at 12:08:31 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -101,6 +101,11 @@ Object subclass: #RSSDocument
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Swiki-Modules'!
+Object subclass: #SwikiBookContext
+	instanceVariableNames: 'request response shelf book'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Swiki-Comanche'!
 StringHolder subclass: #SwikiBrowser
 	instanceVariableNames: 'shelf bookList bookListIndex functionList functionListIndex categoryList categoryListIndex elementList elementListIndex booksAsHierarchy'
 	classVariableNames: ''
@@ -269,6 +274,11 @@ In the folder for the swiki, several things are of significants:
 	groups			This directory contains the access control groups for AniAniWeb
 !
 
+Object subclass: #SwikiPageContext
+	instanceVariableNames: 'request response shelf book page'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Swiki-Comanche'!
 Object subclass: #SwikiRSSModule
 	instanceVariableNames: 'urlToRss sema'
 	classVariableNames: ''
@@ -387,6 +397,11 @@ pageAddresses = the list of exceptions to the default value having to do with pa
 bookAddresses = the list of exceptions to the default value having to do with book addresses
 other = the list of exceptions to the default value not having to do with addresses !
 
+Object subclass: #SwikiShelfContext
+	instanceVariableNames: 'request response shelf'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Swiki-Comanche'!
 Object subclass: #SwikiStorage
 	instanceVariableNames: 'dir dict'
 	classVariableNames: ''
@@ -3315,14 +3330,14 @@ isSelectingABook
 isSelectingAShelf
 	^bookListIndex = 1! !
 
-!SwikiBrowser methodsFor: 'contents'!
+!SwikiBrowser methodsFor: 'contents' stamp: 'xw 5/14/2022 11:54'!
 bookContents: input notifying: aController
 	| inputString inputCode book |
 	inputString _ input asString.
 	book _ self book.
 	self function caseOf:
 		{['addresses (book)']->["Book Address"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class bookContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiBookContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf :book |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -3331,7 +3346,7 @@ bookContents: input notifying: aController
 			contents _ inputString.
 			^true].
 		['addresses (page)']->["Page Address"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class pageContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiPageContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf :book :page |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -3340,7 +3355,7 @@ bookContents: input notifying: aController
 			contents _ inputString.
 			^true].
 		['addresses (priv)']->["Private Address"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class bookContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiBookContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf :book |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -3359,7 +3374,7 @@ bookContents: input notifying: aController
 			contents _ inputString.
 			^true].
 		['actions (book)']->["Book Action"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class bookContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiBookContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf :book |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -3368,7 +3383,7 @@ bookContents: input notifying: aController
 			contents _ inputString.
 			^true].
 		['actions (page)']->["Page Action"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class pageContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiPageContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf :book :page |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -3438,13 +3453,13 @@ shiftedYellowButtonActivity)]
 			lines: shiftMenu lineArray
 			selections: shiftMenu selections]! !
 
-!SwikiBrowser methodsFor: 'contents'!
+!SwikiBrowser methodsFor: 'contents' stamp: 'xw 5/14/2022 11:55'!
 shelfContents: input notifying: aController
 	| inputString inputCode |
 	inputString _ input asString.
 	self function caseOf:
 		{['addresses (shelf)']->["Shelf Address"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class shelfContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiShelfContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -3453,7 +3468,7 @@ shelfContents: input notifying: aController
 			contents _ inputString.
 			^true].
 		['addresses (priv)']->["Private Address"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class shelfContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiShelfContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -3472,7 +3487,7 @@ shelfContents: input notifying: aController
 			contents _ inputString.
 			^true].
 		['actions (shelf)']->["Shelf Action"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class shelfContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiShelfContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -3481,7 +3496,7 @@ shelfContents: input notifying: aController
 			contents _ inputString.
 			^true].
 		['actions (book)']->["Book Action"
-			Parser new parse: (ReadStream on: inputString) class: (nil class) noPattern: true context: (self class bookContext) notifying: aController ifFail: [^false].
+			Parser new parse: (ReadStream on: inputString) class: SwikiBookContext noPattern: true notifying: aController ifFail: [^false].
 			inputString _ aController text asString.
 			inputCode _ Compiler evaluate: ('[:request :response :shelf :book |', inputString, ']') notifying: aController logged: false.
 			inputCode ifNil: [^false].
@@ -4339,18 +4354,6 @@ updateFunctionList
 	self changed: #functionList.
 	self updateCategoryList! !
 
-
-!SwikiBrowser class methodsFor: 'contexts'!
-bookContext
-	^[:request :response :shelf :book]! !
-
-!SwikiBrowser class methodsFor: 'contexts'!
-pageContext
-	^[:request :response :shelf :book :page]! !
-
-!SwikiBrowser class methodsFor: 'contexts'!
-shelfContext
-	^[:request :response :shelf]! !
 
 !SwikiBrowser class methodsFor: 'instance creation'!
 asMVCOnShelf: aSwikiShelf
