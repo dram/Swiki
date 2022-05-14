@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 14 May 2022 at 10:11:15 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 14 May 2022 at 10:15:25 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -2337,28 +2337,6 @@ fromXml: xmlDocument
 	return _ self new.
 	return initializeFromXml: xmlDocument.
 	^return! !
-
-
-!Socket methodsFor: 'sending'!
-sendData: aStringOrByteArray
-	"Send all of the data in the given array, even if it requires multiple calls to send it all. Return the number of bytes sent."
-
-	"An experimental version use on slow lines: Longer timeout and smaller writes to try to avoid spurious timeouts."
-
-	| bytesSent bytesToSend count |
-	bytesToSend _ aStringOrByteArray size.
-	bytesSent _ 0.
-	[bytesSent < bytesToSend] whileTrue: [
-		(self waitForSendDoneFor: 60)
-			ifFalse: [ConnectionTimedOut signal: 'send data timeout; data not sent'].
-		count _ self primSocket: socketHandle
-			sendData: aStringOrByteArray
-			startIndex: bytesSent + 1
-			count: (bytesToSend - bytesSent min: 5000).
-		bytesSent _ bytesSent + count].
-
-	^ bytesSent
-! !
 
 
 !SwikiBrowser methodsFor: 'accessing'!
