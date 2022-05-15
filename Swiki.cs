@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 15 May 2022 at 5:02:50 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 15 May 2022 at 5:53:22 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -2198,41 +2198,6 @@ pluginText: text request: request response: response shelf: shelf book: book pag
 initialize
 	CR _ Character cr.
 	LF _ Character lf! !
-
-
-!PositionableStream methodsFor: 'string functions'!
-bufferSize
-	^5000! !
-
-!PositionableStream methodsFor: 'string functions'!
-copyFrom: pos1 to: pos2
-	self position: pos1 - 1.
-	^self next: pos2 - pos1 + 1! !
-
-!PositionableStream methodsFor: 'string functions'!
-findString: subString
-	"Answer the index of subString within the receiver, starting at start. If 
-	the receiver does not contain subString, answer 0."
-	^self findString: subString startingAt: 1.! !
-
-!PositionableStream methodsFor: 'string functions'!
-findString: subString startingAt: start
-	^self findString: subString startingAt: start caseSensitive: true! !
-
-!PositionableStream methodsFor: 'string functions'!
-findString: subString startingAt: start caseSensitive: caseSensitive
-	"Use buffers to find the subString on this stream"
-	| buffer pos return |
-	pos _ start - 1.
-	[self atEnd] whileFalse: [
-		self position: pos.
-		buffer _ self next: self bufferSize.
-		return _ buffer findString: subString startingAt: 1 caseSensitive: caseSensitive.
-		(return = 0) ifFalse: [
-			self position: 0.
-			^pos + return].
-		pos _ pos + buffer size - subString size].
-	^0! !
 
 
 !RSSDocument methodsFor: 'initializing'!
@@ -4705,6 +4670,41 @@ referenceMissingFileNamed: aString onDir: aSwikiDir options: dict
 !SwikiFileServer class methodsFor: 'instance creation'!
 new
 	^super new initialize! !
+
+
+!SwikiFileStream methodsFor: 'string functions' stamp: 'xw 5/15/2022 17:51'!
+bufferSize
+	^5000! !
+
+!SwikiFileStream methodsFor: 'string functions' stamp: 'xw 5/15/2022 17:51'!
+copyFrom: pos1 to: pos2
+	self position: pos1 - 1.
+	^self next: pos2 - pos1 + 1! !
+
+!SwikiFileStream methodsFor: 'string functions' stamp: 'xw 5/15/2022 17:53'!
+findString: subString
+	"Answer the index of subString within the receiver, starting at start. If
+	the receiver does not contain subString, answer 0."
+	^self findString: subString startingAt: 1.! !
+
+!SwikiFileStream methodsFor: 'string functions' stamp: 'xw 5/15/2022 17:51'!
+findString: subString startingAt: start
+	^self findString: subString startingAt: start caseSensitive: true! !
+
+!SwikiFileStream methodsFor: 'string functions' stamp: 'xw 5/15/2022 17:51'!
+findString: subString startingAt: start caseSensitive: caseSensitive
+	"Use buffers to find the subString on this stream"
+	| buffer pos return |
+	pos _ start - 1.
+	[self atEnd] whileFalse: [
+		self position: pos.
+		buffer _ self next: self bufferSize.
+		return _ buffer findString: subString startingAt: 1 caseSensitive: caseSensitive.
+		(return = 0) ifFalse: [
+			self position: 0.
+			^pos + return].
+		pos _ pos + buffer size - subString size].
+	^0! !
 
 
 !SwikiFileStream class methodsFor: 'file creation' stamp: 'xw 5/15/2022 16:18'!
