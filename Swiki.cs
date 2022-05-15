@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 15 May 2022 at 11:40 am'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 15 May 2022 at 5:02:50 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -205,6 +205,11 @@ serveFileBlock = a block that determines how to serve a SwikiFile or SwikiImage
 serveDirectoryBlock = a block that determines how to serve a SwikiDirectory
 serveMissingFileBlock = a block that determines how to serve a missing file!
 
+StandardFileStream subclass: #SwikiFileStream
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Swiki-Storage'!
 OrderedCollection subclass: #SwikiFileVersions
 	instanceVariableNames: 'name mimeType'
 	classVariableNames: ''
@@ -4390,9 +4395,9 @@ moveVersions: versions to: newDir
 	versions do: [:file |
 		newDir moveFileNamed: (dir fullNameFor: file name) toFileName: versions name]! !
 
-!SwikiDirectory methodsFor: 'file operations' stamp: 'xw 5/13/2022 07:52'!
+!SwikiDirectory methodsFor: 'file operations' stamp: 'xw 5/15/2022 16:35'!
 readOnlyFile: aSwikiFile
-	^ StandardFileStream readOnlyFileNamed: (self dir fullNameFor: aSwikiFile name)! !
+	^ SwikiFileStream readOnlyFileNamed: aSwikiFile name inDirectory: self dir! !
 
 !SwikiDirectory methodsFor: 'file operations'!
 thumbnailOf: versions size: size
@@ -4700,6 +4705,23 @@ referenceMissingFileNamed: aString onDir: aSwikiDir options: dict
 !SwikiFileServer class methodsFor: 'instance creation'!
 new
 	^super new initialize! !
+
+
+!SwikiFileStream class methodsFor: 'file creation' stamp: 'xw 5/15/2022 16:18'!
+fileNamed: fileName inDirectory: directory
+	^ self fileNamed: (directory fullNameFor: fileName)! !
+
+!SwikiFileStream class methodsFor: 'file creation' stamp: 'xw 5/15/2022 16:05'!
+newFileNamed: fileName inDirectory: directory
+	^ self newFileNamed: (directory fullNameFor: fileName)! !
+
+!SwikiFileStream class methodsFor: 'file creation' stamp: 'xw 5/15/2022 16:21'!
+oldFileNamed: fileName inDirectory: directory
+	^ self oldFileNamed: (directory fullNameFor: fileName)! !
+
+!SwikiFileStream class methodsFor: 'file creation' stamp: 'xw 5/15/2022 16:04'!
+readOnlyFileNamed: fileName inDirectory: directory
+	^ self readOnlyFileNamed: (directory fullNameFor: fileName)! !
 
 
 !SwikiFileVersions methodsFor: 'accessing'!
@@ -10035,7 +10057,7 @@ initialize
 		addAction: #swikiAction from: '<?' to: '?>'! !
 
 
-!XmlSwikiStorage methodsFor: 'pages'!
+!XmlSwikiStorage methodsFor: 'pages' stamp: 'xw 5/15/2022 16:58'!
 backupPage: aPage
 	"Back-up a .xml page to put it's contents into a .old page."
 	| oldPath oldStream file pos |
@@ -10044,10 +10066,10 @@ backupPage: aPage
 	oldPath _ (aPage id asString), '.old'.
 	"Get the .old stream to write on"
 	(dir fileExists: oldPath)
-		ifTrue: [oldStream _ dir oldFileNamed: oldPath.
+		ifTrue: [oldStream := SwikiFileStream oldFileNamed: oldPath inDirectory: dir.
 				oldStream setToEnd]
-		ifFalse: [oldStream _ dir newFileNamed: oldPath].
-	file _ (dir readOnlyFileNamed: (aPage id asString, '.xml')) contentsOfEntireFile.
+		ifFalse: [oldStream := SwikiFileStream newFileNamed: oldPath inDirectory: dir].
+	file := (SwikiFileStream readOnlyFileNamed: (aPage id asString, '.xml') inDirectory: dir) contentsOfEntireFile.
 	pos _ file findString: '<page>' startingAt: 1.
 	"Add current page."
 	oldStream nextPutAll: (file copyFrom: pos to: file size).
@@ -10063,15 +10085,15 @@ isAComplexPage: aPage
 	^true
 ! !
 
-!XmlSwikiStorage methodsFor: 'pages'!
+!XmlSwikiStorage methodsFor: 'pages' stamp: 'xw 5/15/2022 16:43'!
 loadPage: aPage
 	| xml pos0 |
 	(aPage versionId = 0)
 		ifTrue: ["Load a current page from .xml file"
-			xml _ (dir readOnlyFileNamed: ((aPage id asString), '.xml')) contentsOfEntireFile.
+			xml := (SwikiFileStream readOnlyFileNamed: ((aPage id asString), '.xml') inDirectory: dir) contentsOfEntireFile.
 			self loadPage: aPage from: xml startingAt: 1]
 		ifFalse: ["Load an old page from .old file"
-			xml _ dir readOnlyFileNamed: ((aPage id asString), '.old').
+			xml := SwikiFileStream readOnlyFileNamed: ((aPage id asString), '.old') inDirectory: dir.
 			"Get the correct version"
 			pos0 _ 0.
 			1 to: (aPage versionId) do: [:i |
@@ -10148,12 +10170,12 @@ loadPages
 					self error: ((dir fullPathFor: (id asString, '.xml')), ' is missing')]]].
 	^pages! !
 
-!XmlSwikiStorage methodsFor: 'pages'!
+!XmlSwikiStorage methodsFor: 'pages' stamp: 'xw 5/15/2022 16:54'!
 loadVersionsFrom: aPage
 	| versions xml pos0 version vid |
 	versions _ OrderedCollection new.
 	(dir fileExists: (aPage id asString, '.old'))
-		ifTrue: [xml _ dir readOnlyFileNamed: (aPage id asString, '.old').
+		ifTrue: [xml := SwikiFileStream readOnlyFileNamed: (aPage id asString, '.old') inDirectory: dir.
 			vid _ 1.
 			pos0 _ 0.
 			[0 = (pos0 _ xml findString: '<page>' startingAt: (pos0 + 1))] whileFalse: [
@@ -10215,7 +10237,7 @@ textKey: key from: aPage
 	file close.
 	^return! !
 
-!XmlSwikiStorage methodsFor: 'pages'!
+!XmlSwikiStorage methodsFor: 'pages' stamp: 'xw 5/15/2022 16:59'!
 wipePage: aPage
 	"Move contents of .old to .del."
 	| oldPath delPath delStream |
@@ -10224,16 +10246,16 @@ wipePage: aPage
 	delPath _ (aPage id asString), '.del'.
 	(dir fileExists: oldPath) ifFalse: [^self].
 	delStream _ (dir fileExists: delPath)
-		ifTrue: [(dir fileNamed: delPath)
+		ifTrue: [(SwikiFileStream fileNamed: delPath inDirectory: dir)
 			setToEnd;
 			yourself]
-		ifFalse: [dir newFileNamed: delPath].
+		ifFalse: [SwikiFileStream newFileNamed: delPath inDirectory: dir].
 	delStream
-		nextPutAll: (dir readOnlyFileNamed: oldPath) contentsOfEntireFile;
+		nextPutAll: (SwikiFileStream readOnlyFileNamed: oldPath inDirectory: dir) contentsOfEntireFile;
 		close.
 	dir deleteFileNamed: oldPath! !
 
-!XmlSwikiStorage methodsFor: 'pages'!
+!XmlSwikiStorage methodsFor: 'pages' stamp: 'xw 5/15/2022 16:50'!
 writePage: aPage
 	| file text normalPath |
 	
@@ -10272,12 +10294,12 @@ writePage: aPage
 	["Delete Old Version"
 	normalPath _ self pathFrom: aPage.
 	dir deleteFileNamed: normalPath.
-	file _ dir newFileNamed: normalPath.
+	file := SwikiFileStream newFileNamed: normalPath inDirectory: dir.
 	file nextPutAll: text; close] ifError: ["Try to correct it"
 		(dir fileExists: normalPath) ifFalse: [
 			"Retry with garbage collect"
 			Smalltalk garbageCollect.
-			file _ dir newFileNamed: normalPath.
+			file := SwikiFileStream newFileNamed: normalPath inDirectory: dir.
 			file nextPutAll: text; close.]]! !
 
 !XmlSwikiStorage methodsFor: 'pages'!
