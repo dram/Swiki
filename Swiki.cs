@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 15 May 2022 at 11:03:36 am'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 15 May 2022 at 11:12:33 am'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -10066,43 +10066,6 @@ initialize
 	SwikiFormatter
 		initialize;
 		addAction: #swikiAction from: '<?' to: '?>'! !
-
-
-!UndefinedObject methodsFor: 'registration'!
-addService: aService 
-	self allServices add: aService! !
-
-!UndefinedObject methodsFor: 'registration'!
-removeService: aService 
-	self allServices
-		remove: aService
-		ifAbsent: []! !
-
-!UndefinedObject methodsFor: 'accessing'!
-allServices
-	"answer all the registered services.
-
-	 Do not override me - override #services"
-	^ Services! !
-
-!UndefinedObject methodsFor: 'accessing'!
-serviceNamed: aString 
-	^ self serviceNamed: aString
-		ifAbsent: [self error: 'No service by that name']! !
-
-!UndefinedObject methodsFor: 'accessing'!
-serviceNamed: aString ifAbsent: aBlock
-	^ self services
-		detect: [:ea | ea name = aString]
-		ifNone: aBlock! !
-
-!UndefinedObject methodsFor: 'accessing'!
-services
-	^ self allServices! !
-
-!UndefinedObject methodsFor: '*Swiki-accessing'!
-defaultSearchPriority
-	^ self defaultPriority - 1! !
 
 
 !XmlSwikiStorage methodsFor: 'pages'!
