@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 14 May 2022 at 10:15:25 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 15 May 2022 at 11:03:36 am'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -10103,13 +10103,6 @@ services
 !UndefinedObject methodsFor: '*Swiki-accessing'!
 defaultSearchPriority
 	^ self defaultPriority - 1! !
-
-
-!XMLNodeWithElements methodsFor: 'accessing'!
-elementAt: entityName ifAbsent: aBlock
-	elements
-		ifNil: [^aBlock value].
-	^self elements detect: [:each | each name = entityName] ifNone: [^aBlock value]! !
 
 
 !XmlSwikiStorage methodsFor: 'pages'!
