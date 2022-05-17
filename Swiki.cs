@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 17 May 2022 at 8:21:53 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 17 May 2022 at 9:02:03 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -1385,6 +1385,10 @@ addModelItemsToWindowMenu: aMenu
 			ifTrue: [aMenu add: 'turn debug mode off' target: self action: #deploymentMode]
 			ifFalse: [aMenu add: 'turn debug mode on' target: self action: #debugMode]].
 	^super addModelItemsToWindowMenu: aMenu! !
+
+!ComSwikiLauncher methodsFor: 'updating' stamp: 'xw 5/17/2022 21:00'!
+windowIsClosing
+	self isOn ifTrue: [self stopServer]! !
 
 
 !ComSwikiLauncher class methodsFor: 'initialize-release'!
