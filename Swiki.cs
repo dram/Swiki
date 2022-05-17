@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 17 May 2022 at 9:02:03 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 18 May 2022 at 7:51:07 am'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -18,7 +18,7 @@ StringHolder subclass: #ComSwikiLauncher
 	instanceVariableNames: 'debug isShutdown module package port portButton ports server startStopButton'
 	classVariableNames: 'AutoCorrectMissingPages ValidPorts'
 	poolDictionaries: ''
-	category: 'Swiki-Comanche'!
+	category: 'Swiki-WebServer'!
 
 !ComSwikiLauncher commentStamp: '<historical>' prior: 0!
 ComSwikiLauncher
@@ -95,12 +95,12 @@ Object subclass: #SwikiBookContext
 	instanceVariableNames: 'request response shelf book'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Swiki-Comanche'!
+	category: 'Swiki-WebServer'!
 StringHolder subclass: #SwikiBrowser
 	instanceVariableNames: 'shelf bookList bookListIndex functionList functionListIndex categoryList categoryListIndex elementList elementListIndex booksAsHierarchy'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Swiki-Comanche'!
+	category: 'Swiki-WebServer'!
 
 !SwikiBrowser commentStamp: '<historical>' prior: 0!
 SwikiBrowser
@@ -244,7 +244,7 @@ Object subclass: #SwikiModule
 	instanceVariableNames: 'shelf'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Swiki-Comanche'!
+	category: 'Swiki-WebServer'!
 
 !SwikiModule commentStamp: 'Je77 12/2/2005 09:09' prior: 0!
 SwikiModule
@@ -273,7 +273,7 @@ Object subclass: #SwikiPageContext
 	instanceVariableNames: 'request response shelf book page'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Swiki-Comanche'!
+	category: 'Swiki-WebServer'!
 Object subclass: #SwikiRSSModule
 	instanceVariableNames: 'urlToRss sema'
 	classVariableNames: ''
@@ -301,7 +301,7 @@ SwikiRequest subclass: #HttpSwikiRequest
 	instanceVariableNames: 'raw'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Swiki-Comanche'!
+	category: 'Swiki-WebServer'!
 
 !HttpSwikiRequest commentStamp: '<historical>' prior: 0!
 HttpSwikiRequest
@@ -396,7 +396,7 @@ Object subclass: #SwikiShelfContext
 	instanceVariableNames: 'request response shelf'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Swiki-Comanche'!
+	category: 'Swiki-WebServer'!
 Object subclass: #SwikiStorage
 	instanceVariableNames: 'dir dict'
 	classVariableNames: ''
