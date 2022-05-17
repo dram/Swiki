@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 15 May 2022 at 5:53:22 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 17 May 2022 at 8:21:53 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -15,7 +15,7 @@ Object subclass: #AniGroupsModule
 	poolDictionaries: ''
 	category: 'Swiki-Modules'!
 StringHolder subclass: #ComSwikiLauncher
-	instanceVariableNames: 'package port ports isShutdown startStopButton portButton module'
+	instanceVariableNames: 'debug isShutdown module package port portButton ports server startStopButton'
 	classVariableNames: 'AutoCorrectMissingPages ValidPorts'
 	poolDictionaries: ''
 	category: 'Swiki-Comanche'!
@@ -1269,8 +1269,9 @@ startStopLabel
 		ifTrue: ['stop server']
 		ifFalse: ['start server']! !
 
-!ComSwikiLauncher methodsFor: 'initialize-release'!
+!ComSwikiLauncher methodsFor: 'initialize-release' stamp: 'xw 5/17/2022 20:10'!
 initialize
+	self deploymentMode.
 	self ports: ValidPorts.
 	super initialize.! !
 
@@ -1283,19 +1284,17 @@ changePort
 		(ports size < index) ifTrue: [index _ 1].
 		self port: (ports at: index)]! !
 
-!ComSwikiLauncher methodsFor: 'action'!
+!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:32'!
 debugMode
-	(HttpService serviceOnPort: port) setDebugMode! !
+	debug := true! !
 
-!ComSwikiLauncher methodsFor: 'action'!
+!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:32'!
 deploymentMode
-	(HttpService serviceOnPort: port) setDeploymentMode! !
+	debug := false! !
 
-!ComSwikiLauncher methodsFor: 'action'!
+!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 20:01'!
 isOn
-	^ (HttpService
-		serviceOnPort: port
-		ifAbsent: []) notNil! !
+	^ server ifNil: [false] ifNotNil: [server isRunning]! !
 
 !ComSwikiLauncher methodsFor: 'action'!
 isPort
@@ -1319,23 +1318,26 @@ shelf _ module shelf.
 shutdown
 	self class shutdown! !
 
-!ComSwikiLauncher methodsFor: 'action'!
+!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:33'!
 startServer
 	"To Start Swiki on Comanche:"
 	Socket initializeNetwork.
 	module _ SwikiModule perform: package.
 	module
 		ifNil: [self error: 'Did not start!!'].
-	((HttpService on: port named: package asString , '-' , port asString)
-		plug: module) start.
+	server := WebServer new
+		listenOn: port;
+		addService: '/' action: [:request | module processHttpRequest: request];
+		errorHandler: [:error :request | self handleError: error request: request];
+		yourself.
 	startStopButton label: self startStopLabel.
 	self class allInstancesDo: [:each | each changed: #startStopLabel.
 									each changed: #isOn]! !
 
-!ComSwikiLauncher methodsFor: 'action'!
+!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 20:03'!
 stopServer
 	"To End Swiki on Comanche:"
-	| service shelf |
+	| shelf |
 	Smalltalk garbageCollect.
 	shelf _ module shelf.
 	"module"
@@ -1344,10 +1346,7 @@ stopServer
 		ifTrue: [PopUpMenu notify: 'Before stopping the server, you
 need to close the Swiki Brower'.
 			^ self].
-	(service _ HttpService
-				serviceOnPort: port
-				ifAbsent: [])
-		ifNotNil: [service unregister].
+	server ifNotNil: [server destroy].
 	module _ nil.
 	Smalltalk garbageCollect.
 	startStopButton label: self startStopLabel.
@@ -1368,12 +1367,21 @@ defaultBackgroundColor
 initialExtent
 	^300@50! !
 
-!ComSwikiLauncher methodsFor: 'window menu'!
+!ComSwikiLauncher methodsFor: 'errors' stamp: 'xw 5/17/2022 20:02'!
+handleError: error request: request
+        debug
+                ifTrue: [UnhandledError signalForException: error]
+                ifFalse: [
+                        server log: error.
+                        request send500Response: ''
+                ]! !
+
+!ComSwikiLauncher methodsFor: 'window menu' stamp: 'xw 5/17/2022 20:08'!
 addModelItemsToWindowMenu: aMenu
 	(self isOn) ifTrue: [
 		aMenu addLine.
 		aMenu add: 'open swiki browser...' target: self action: #openSwikiBrowser.
-		(HttpService serviceOnPort: port) isDebugMode
+		debug
 			ifTrue: [aMenu add: 'turn debug mode off' target: self action: #deploymentMode]
 			ifFalse: [aMenu add: 'turn debug mode on' target: self action: #debugMode]].
 	^super addModelItemsToWindowMenu: aMenu! !
@@ -4914,47 +4922,53 @@ shelf: aSwikiShelf
 filter: rawRequest
 	^HttpSwikiRequest fromHttpRequest: rawRequest! !
 
-!SwikiModule methodsFor: 'processing'!
+!SwikiModule methodsFor: 'processing' stamp: 'xw 5/16/2022 22:03'!
 processHttpRequest: rawRequest 
-	| request response |
+	| content request response rawResponse |
 	request := self filter: rawRequest.
 	response := Dictionary new.
 	shelf process: request response: response.
-	^self responseFrom: response! !
+	rawResponse := self responseFrom: response.
+	content := response at: 'content'.
+	(content isKindOf: String)
+		ifTrue: [rawRequest sendResponse: rawResponse content: content]
+		ifFalse: [(content isKindOf: BlockClosure)
+			ifTrue: [rawRequest sendResponse: rawResponse contentBlock: content]
+			ifFalse: [rawRequest sendResponse: rawResponse contentStream: content size: nil]]
+	! !
 
-!SwikiModule methodsFor: 'processing' stamp: 'xw 5/13/2022 21:05'!
+!SwikiModule methodsFor: 'processing' stamp: 'xw 5/17/2022 20:07'!
 responseFrom: dict 
-	| response content |
-	response _ HttpResponse new.
+	| response |
 	"header status"
-	response status: (dict at: 'headerStatus' ifAbsent: [#ok]).
+	response := WebResponse
+		protocol: 'HTTP/1.1'
+		code: ((dict at: 'headerStatus' ifAbsent: [#ok]) caseOf: {
+			[#notFound] -> [404].
+			[#ok] -> [200].
+			[#tempMoved] -> [302].
+			[#unauthorized] -> [401]
+		}).
 	"connection"
 	"response fieldAt: 'Connection' put: (dict at: 'connection' ifAbsent: ['close'])."
 	"cacheing"
 	(dict at: 'cacheing' ifAbsent: [false])
 		ifTrue: [response
-			fieldAt: 'Cache-Control' put: 'public';
+			headerAt: 'Cache-Control' put: 'public';
 			"Last modified put in sometime in the past, so that Safari will cache."
-			fieldAt: 'Last-Modified' put: 'Sat, 1 Jan 2005 00:00:00 GMT']
+			headerAt: 'Last-Modified' put: 'Sat, 1 Jan 2005 00:00:00 GMT']
 		ifFalse: [response
-			fieldAt: 'Pragma' put: 'no-cache';
-			fieldAt: 'Expires' put: '0';
-			fieldAt: 'Cache-Control' put: 'no-cache'].
+			headerAt: 'Pragma' put: 'no-cache';
+			headerAt: 'Expires' put: '0';
+			headerAt: 'Cache-Control' put: 'no-cache'].
 	"location (in case of redirect)"
 	(dict includesKey: 'location') ifTrue: [response
-		fieldAt: 'Location' put: (dict at: 'location')].
+		headerAt: 'Location' put: (dict at: 'location')].
 	"authenticate (in case of unauthorized)"
 	(dict includesKey: 'authenticate') ifTrue: [response
-		fieldAt: 'WWW-Authenticate' put: (dict at: 'authenticate')].
+		headerAt: 'WWW-Authenticate' put: (dict at: 'authenticate')].
 	"content type"
 	response contentType: (dict at: 'contentType' ifAbsent: ['text/html; charset=iso-8859-1']).
-	"contents"
-	content _ dict at: 'content'.
-	(content isKindOf: String)
-		ifTrue: [response contents: (ReadStream on: content)]
-		ifFalse: [(content isKindOf: BlockClosure)
-			ifTrue: [response _ response asHttpPartialResponseBlock: content]
-			ifFalse: [response contents: content]].
 	"return the response to be served"
 	^ response! !
 
@@ -5392,10 +5406,10 @@ textIncludesAnyOf: collection
 url
 	^raw url! !
 
-!HttpSwikiRequest methodsFor: 'utility'!
+!HttpSwikiRequest methodsFor: 'utility' stamp: 'xw 5/17/2022 20:20'!
 user
 	"Give IP address since this is the closest that an HttpRequest without login, password."
-	^raw remoteAddress! !
+	^raw stream socket remoteAddress! !
 
 !HttpSwikiRequest methodsFor: 'utility'!
 userID
