@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 18 May 2022 at 8:13:23 am'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 18 May 2022 at 8:12:27 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -10204,10 +10204,10 @@ loadVersionsFrom: aPage
 			xml close].
 	^versions! !
 
-!XmlSwikiStorage methodsFor: 'pages'!
+!XmlSwikiStorage methodsFor: 'pages' stamp: 'xw 5/18/2022 20:12'!
 multipleTextFrom: aPage
 	| file return |
-	file _ dir readOnlyFileNamed: (self pathFrom: aPage).
+	file := SwikiFileStream readOnlyFileNamed: (self pathFrom: aPage) inDirectory: dir.
 	return _ Dictionary new.
 	aPage rawText keysAndValuesDo: [:key :value |
 		(value isKindOf: Array)
@@ -10225,10 +10225,10 @@ pathFrom: aPage
 		ifFalse: [(aPage id asString), '.old']
 ! !
 
-!XmlSwikiStorage methodsFor: 'pages'!
+!XmlSwikiStorage methodsFor: 'pages' stamp: 'xw 5/18/2022 20:11'!
 simpleTextFrom: aPage
 	| file return |
-	file _ dir readOnlyFileNamed: (self pathFrom: aPage).
+	file := SwikiFileStream readOnlyFileNamed: (self pathFrom: aPage) inDirectory: dir.
 	file position: ((aPage rawText at: 1) - 1).
 	return _ TextFormatter decodeFromXmlCr: (file next: (1 + (aPage rawText at: 2) - (aPage rawText at: 1))).
 	file close.
