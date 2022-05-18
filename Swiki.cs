@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 18 May 2022 at 7:51:07 am'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 18 May 2022 at 8:13:23 am'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -14,38 +14,6 @@ Object subclass: #AniGroupsModule
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Swiki-Modules'!
-StringHolder subclass: #ComSwikiLauncher
-	instanceVariableNames: 'debug isShutdown module package port portButton ports server startStopButton'
-	classVariableNames: 'AutoCorrectMissingPages ValidPorts'
-	poolDictionaries: ''
-	category: 'Swiki-WebServer'!
-
-!ComSwikiLauncher commentStamp: '<historical>' prior: 0!
-ComSwikiLauncher
-
-This class provides a morphic interface to launch Swiki on Comanche.
-In Morphic, doIt: (ComSwikiLauncher openAsMorph)
-In MVC, doIt: (ComSwikiLauncher openMVCView)
-
-BUTTON EXPLANATION
-start/stop server button
-	press on this button to start or stop the Swiki server on the given port.
-save & exit button
-	once everything is set up, this button will save and quit and turn
-	the swiki on at the next reboot. This is not to be confused with 'save
-	and quit' which does not restart the server.
-port button
-	press on this when the server is inactive to change the port number.
-	Note: 80 is the default port for a web server, but many systems will
-		not allow a user to use it (Windows NT, Unix)
-
-TO EDIT SWIKI
-start the server
-bring up ComSwiki Launcher's menu
-	press on the button next to X
-chose 'open swiki browser...'
-!
-
 Object subclass: #IdFormatter
 	instanceVariableNames: 'idBlock startBlock transitionBlock endBlock formatter settings'
 	classVariableNames: ''
@@ -102,12 +70,12 @@ StringHolder subclass: #SwikiBrowser
 	poolDictionaries: ''
 	category: 'Swiki-WebServer'!
 
-!SwikiBrowser commentStamp: '<historical>' prior: 0!
+!SwikiBrowser commentStamp: 'xw 5/18/2022 08:10' prior: 0!
 SwikiBrowser
 
 this is a browser to edit the swikis.
 
-To open, use the ComSwikiLauncher:
+To open, use the SwikiLauncher:
 1. Start the server.
 2. Chose "open swiki browser..." from the window menu (next to the X)!
 
@@ -239,6 +207,38 @@ is a file entry for an image (usually, a file that ends with gif, jpeg, jpg, or 
 INSTANCE VARIABLES:
 width = the width of the image (as a number)
 height = the height of the image (as a number)!
+
+StringHolder subclass: #SwikiLauncher
+	instanceVariableNames: 'debug isShutdown module package port portButton ports server startStopButton'
+	classVariableNames: 'AutoCorrectMissingPages ValidPorts'
+	poolDictionaries: ''
+	category: 'Swiki-WebServer'!
+
+!SwikiLauncher commentStamp: 'xw 5/18/2022 07:55' prior: 0!
+SwikiLauncher
+
+This class provides a morphic interface to launch Swiki on WebServer.
+In Morphic, doIt: (SwikiLauncher openAsMorph)
+In MVC, doIt: (SwikiLauncher openMVCView)
+
+BUTTON EXPLANATION
+start/stop server button
+	press on this button to start or stop the Swiki server on the given port.
+save & exit button
+	once everything is set up, this button will save and quit and turn
+	the swiki on at the next reboot. This is not to be confused with 'save
+	and quit' which does not restart the server.
+port button
+	press on this when the server is inactive to change the port number.
+	Note: 80 is the default port for a web server, but many systems will
+		not allow a user to use it (Windows NT, Unix)
+
+TO EDIT SWIKI
+start the server
+bring up Swiki Launcher's menu
+	press on the button next to X
+chose 'open swiki browser...'
+!
 
 Object subclass: #SwikiModule
 	instanceVariableNames: 'shelf'
@@ -1222,372 +1222,6 @@ onDir: aFileDirectory
 		dir: aFileDirectory;
 		initialize;
 		yourself! !
-
-
-!ComSwikiLauncher methodsFor: 'accessing'!
-isShutdown
-	^isShutdown ifNil: [false] ifNotNil: [isShutdown]! !
-
-!ComSwikiLauncher methodsFor: 'accessing'!
-isShutdown: boolean
-	(self isShutdown = boolean) ifFalse: [
-		isShutdown _ boolean.
-		self changed: #isShutdown]! !
-
-!ComSwikiLauncher methodsFor: 'accessing'!
-package: aSymbol
-	package _ aSymbol! !
-
-!ComSwikiLauncher methodsFor: 'accessing'!
-port: anInteger
-	port _ anInteger.
-	portButton label: self portText.
-	self changed: #portText! !
-
-!ComSwikiLauncher methodsFor: 'accessing'!
-ports: col
-	ports _ col.
-	port _ col at: 1.! !
-
-!ComSwikiLauncher methodsFor: 'buttons'!
-portButton: aMorph
-	portButton _ aMorph.
-	portButton label: self portText! !
-
-!ComSwikiLauncher methodsFor: 'buttons'!
-portText
-	^'port: ', (port asString)! !
-
-!ComSwikiLauncher methodsFor: 'buttons'!
-startStopButton: aMorph
-	startStopButton _ aMorph.
-	startStopButton label: self startStopLabel! !
-
-!ComSwikiLauncher methodsFor: 'buttons'!
-startStopLabel
-	^(self isOn)
-		ifTrue: ['stop server']
-		ifFalse: ['start server']! !
-
-!ComSwikiLauncher methodsFor: 'initialize-release' stamp: 'xw 5/17/2022 20:10'!
-initialize
-	self deploymentMode.
-	self ports: ValidPorts.
-	super initialize.! !
-
-!ComSwikiLauncher methodsFor: 'action'!
-changePort
-	| index |
-
-	self isOn ifFalse: [index _ 1.
-		1 to: (ports size) do: [:i | (ports at: i) = port ifTrue: [index _ i + 1]].
-		(ports size < index) ifTrue: [index _ 1].
-		self port: (ports at: index)]! !
-
-!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:32'!
-debugMode
-	debug := true! !
-
-!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:32'!
-deploymentMode
-	debug := false! !
-
-!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 20:01'!
-isOn
-	^ server ifNil: [false] ifNotNil: [server isRunning]! !
-
-!ComSwikiLauncher methodsFor: 'action'!
-isPort
-	^false! !
-
-!ComSwikiLauncher methodsFor: 'action'!
-openSwikiBrowser
-	| shelf label |
-	label _ port = 80
-				ifTrue: ['Swiki Browser']
-				ifFalse: ['Swiki Browser: ' , port asString].
-	module ifNil: [Smalltalk isMorphic
-						ifFalse: [PopUpMenu notify: 'Start the server'].
-					^ self].
-shelf _ module shelf.
-	Smalltalk isMorphic
-		ifTrue: [(SwikiBrowser asMorphOnShelf: shelf label: label) openInWorld]
-		ifFalse: [SwikiBrowser asMVCOnShelf: shelf label: label]! !
-
-!ComSwikiLauncher methodsFor: 'action'!
-shutdown
-	self class shutdown! !
-
-!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:33'!
-startServer
-	"To Start Swiki on Comanche:"
-	Socket initializeNetwork.
-	module _ SwikiModule perform: package.
-	module
-		ifNil: [self error: 'Did not start!!'].
-	server := WebServer new
-		listenOn: port;
-		addService: '/' action: [:request | module processHttpRequest: request];
-		errorHandler: [:error :request | self handleError: error request: request];
-		yourself.
-	startStopButton label: self startStopLabel.
-	self class allInstancesDo: [:each | each changed: #startStopLabel.
-									each changed: #isOn]! !
-
-!ComSwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 20:03'!
-stopServer
-	"To End Swiki on Comanche:"
-	| shelf |
-	Smalltalk garbageCollect.
-	shelf _ module shelf.
-	"module"
-	(SwikiBrowser allInstances
-			select: [:browser | browser shelf = shelf]) size > 0
-		ifTrue: [PopUpMenu notify: 'Before stopping the server, you
-need to close the Swiki Brower'.
-			^ self].
-	server ifNotNil: [server destroy].
-	module _ nil.
-	Smalltalk garbageCollect.
-	startStopButton label: self startStopLabel.
-	self class allInstancesDo: [:each | each changed: #startStopLabel.
-										each changed: #isOn]! !
-
-!ComSwikiLauncher methodsFor: 'action'!
-toggleState
-	(self isOn)
-		ifTrue: [self stopServer]
-		ifFalse: [self startServer]! !
-
-!ComSwikiLauncher methodsFor: 'looks'!
-defaultBackgroundColor
-	^Color yellow! !
-
-!ComSwikiLauncher methodsFor: 'looks'!
-initialExtent
-	^300@50! !
-
-!ComSwikiLauncher methodsFor: 'errors' stamp: 'xw 5/17/2022 20:02'!
-handleError: error request: request
-        debug
-                ifTrue: [UnhandledError signalForException: error]
-                ifFalse: [
-                        server log: error.
-                        request send500Response: ''
-                ]! !
-
-!ComSwikiLauncher methodsFor: 'window menu' stamp: 'xw 5/17/2022 20:08'!
-addModelItemsToWindowMenu: aMenu
-	(self isOn) ifTrue: [
-		aMenu addLine.
-		aMenu add: 'open swiki browser...' target: self action: #openSwikiBrowser.
-		debug
-			ifTrue: [aMenu add: 'turn debug mode off' target: self action: #deploymentMode]
-			ifFalse: [aMenu add: 'turn debug mode on' target: self action: #debugMode]].
-	^super addModelItemsToWindowMenu: aMenu! !
-
-!ComSwikiLauncher methodsFor: 'updating' stamp: 'xw 5/17/2022 21:00'!
-windowIsClosing
-	self isOn ifTrue: [self stopServer]! !
-
-
-!ComSwikiLauncher class methodsFor: 'initialize-release'!
-initialize
-	ValidPorts _ OrderedCollection new.
-	ValidPorts add: 80.
-	ValidPorts add: 8000.
-	ValidPorts add: 8080.
-	ValidPorts add: 8888.
-	self autoCorrectMissingPages: true! !
-
-!ComSwikiLauncher class methodsFor: 'private'!
-shutdown
-	self allInstances do: [:launcher |
-		launcher isShutdown: true.
-		launcher isOn ifTrue: [launcher stopServer]].
-	Smalltalk snapshot: true andQuit: true.
-	self allInstances do: [:launcher |
-		launcher startServer.
-		launcher isShutdown: false]! !
-
-!ComSwikiLauncher class methodsFor: 'utility'!
-autoCorrectMissingPages
-	^AutoCorrectMissingPages! !
-
-!ComSwikiLauncher class methodsFor: 'utility'!
-autoCorrectMissingPages: aBoolean
-	AutoCorrectMissingPages _ aBoolean! !
-
-!ComSwikiLauncher class methodsFor: 'utility'!
-convertOldATA
-	"Convert Addresses, Templates, and Actions from Beta to Release"
-	| dir bookOrShelfDir |
-	dir _ FileDirectory default directoryNamed: 'swiki'.
-	dir directoryNames do: [:dName |
-		bookOrShelfDir _ dir directoryNamed: dName.
-		(bookOrShelfDir directoryExists: 'addresses') ifTrue: [
-			self convertOldATADirectory: (bookOrShelfDir directoryNamed: 'addresses')].
-		(bookOrShelfDir directoryExists: 'templates') ifTrue: [
-			self convertOldATADirectory: (bookOrShelfDir directoryNamed: 'templates')].
-		(bookOrShelfDir directoryExists: 'actions') ifTrue: [
-			self convertOldATADirectory: (bookOrShelfDir directoryNamed: 'actions')]]
-! !
-
-!ComSwikiLauncher class methodsFor: 'utility'!
-convertOldATADirectory: dir
-	| id xmlMeta subDir |
-	id _ 1.
-	xmlMeta _ WriteStream on: String new.
-	xmlMeta
-		nextPutAll: '<?xml version="1.0"?>';
-		nextPut: Character cr;
-		nextPutAll: '<meta>';
-		nextPut: Character cr.
-	dir fileNames do: [:fName |
-		((fName endsWith: '.book') or: [fName endsWith: '.page']) ifTrue: [
-			xmlMeta
-				nextPutAll: '<file id="';
-				nextPutAll: id asString;
-				nextPutAll: '" type="';
-				nextPutAll: (fName copyAfterLast: $.);
-				nextPutAll: '" name="';
-				nextPutAll: (fName copyUpTo: $.);
-				nextPutAll: '" />';
-				nextPut: Character cr.
-			dir rename: fName toBe: id asString.
-			id _ id + 1]].
-	dir directoryNames do: [:dName |
-		subDir _ dir directoryNamed: dName.
-		subDir fileNames do: [:fName |
-			((fName endsWith: '.book') or: [fName endsWith: '.page']) ifTrue: [
-				xmlMeta
-					nextPutAll: '<file id="';
-					nextPutAll: id asString;
-					nextPutAll: '" type="';
-					nextPutAll: (fName copyAfterLast: $.);
-					nextPutAll: '" name="';
-					nextPutAll: (fName copyUpTo: $.);
-					nextPutAll: '" category="';
-					nextPutAll: dName;
-					nextPutAll: '" />';
-					nextPut: Character cr.
-				dir rename: (subDir fullNameFor: fName) toBe: id asString.
-				id _ id + 1]].
-		dir deleteDirectory: dName].
-	xmlMeta
-		nextPutAll: '</meta>'.
-	(dir newFileNamed: 'meta.xml')
-		nextPutAll: xmlMeta contents;
-		close
-! !
-
-!ComSwikiLauncher class methodsFor: 'utility'!
-convertOldPages
-	"Conversion method used to convert old Swikis (pre-Beta 11) to the new file format.
-	This is to be run after the new server is up and running."
-	| oldAlerts newAlerts |
-	NuSwikiPage allInstances do: [:page |
-		(page settingsIncludes: 'alerts')	ifTrue: [
-			oldAlerts _ page settingsAt: 'alerts'.
-			newAlerts _ ''.
-			(oldAlerts isKindOf: String) ifFalse: [
-				oldAlerts do: [:address | newAlerts _ newAlerts, ', ', address].
-				newAlerts _ newAlerts copyFrom: 3 to: (newAlerts size).
-				page settingsAt: 'alerts' put: newAlerts]].
-		page text: (page text).
-		page write]! !
-
-!ComSwikiLauncher class methodsFor: 'instance creation'!
-openAsMorph
-	^self openAsMorphPackage: #swikiWebServer! !
-
-!ComSwikiLauncher class methodsFor: 'instance creation'!
-openAsMorphPackage: package
-	| instance window aColor startStopButton shutdownButton portButton |
-
-	"Instance of ComSwiki Launcher"
-	instance _ self new.
-	instance package: package.
-	"Display Morph"
-	window _ (SystemWindow labelled: 'ComSwiki Launcher') model: instance.
-	aColor _ Color colorFrom: instance defaultBackgroundColor.
-	"Start/Stop Button"
-	startStopButton _ PluggableButtonMorph on: instance getState: #isOn action: #toggleState.
-	instance startStopButton: startStopButton.
-	startStopButton askBeforeChanging: true.
-	startStopButton color: aColor; onColor: (Color red) offColor: (Color green).
-	window addMorph: startStopButton frame: (0@0 corner: 0.35@1).
-	"Shutdown Button"
-	shutdownButton _ PluggableButtonMorph on: instance getState: #isShutdown action: #shutdown.
-	shutdownButton label: 'save & exit'; askBeforeChanging: true.
-	shutdownButton color: aColor; onColor: aColor darker offColor: aColor.
-	window addMorph: shutdownButton frame: (0.35@0 corner: 0.7@1).
-	"Port Button"
-	portButton _ PluggableButtonMorph on: instance getState: #isPort action: #changePort.
-	instance portButton: portButton.
-	portButton askBeforeChanging: true.
-	portButton color: aColor; onColor: aColor offColor: aColor.
-	window addMorph: portButton frame: (0.7@0 corner: 1@1).
-	"Add to World"
-	window openInWorld.! !
-
-!ComSwikiLauncher class methodsFor: 'instance creation'!
-openMVCView
-	^self openMVCViewPackage: #swikiWebServer! !
-
-!ComSwikiLauncher class methodsFor: 'instance creation'!
-openMVCViewPackage: package
-	"ComSwikiLauncher openMVCViewPackage: #swikiWebServer."
-	| instance window aColor startStopButton shutdownButton portButton openSwikiBrowserButton |
-
-	"Instance of ComSwiki Launcher"
-	instance _ self new.
-	instance package: package.
-	"Display View"
-	window _ StandardSystemView new model: instance.
-	window label: 'ComSwiki Launcher'.
-
-	aColor _ Color colorFrom: instance defaultBackgroundColor.
-	"Start/Stop Button"
-	startStopButton _ PluggableButtonView on: instance getState: #isOn action: #toggleState label: #startStopLabel.
-	instance startStopButton: startStopButton.
-	startStopButton askBeforeChanging: true.
-	startStopButton
-		backgroundColor: aColor;
-		borderWidth: 1.
-		"; onColor: (Color red) offColor: (Color green)."
-	window addSubView: startStopButton.
-
-	"Shutdown Button"
-	shutdownButton _ PluggableButtonView on: instance getState: #isShutdown action: #shutdown.
-	shutdownButton label: 'save & exit'; askBeforeChanging: true.
-	shutdownButton
-		backgroundColor: aColor;
-		borderWidth: 1.
-		"; onColor: aColor darker offColor: aColor."
-	window addSubView: shutdownButton toRightOf: startStopButton.
-
-	"Port Button"
-	portButton _ PluggableButtonView on: instance getState: #isPort action: #changePort label: #portText.
-	instance portButton: portButton.
-	portButton askBeforeChanging: true.
-	portButton
-		backgroundColor: aColor;
-		borderWidth: 1.
-		"; onColor: aColor offColor: aColor."
-	window addSubView: portButton toRightOf: shutdownButton.
-
-	"OpenSwikiBrowserButton"
-	openSwikiBrowserButton _ PluggableButtonView on: instance getState: nil action: #openSwikiBrowser.
-	openSwikiBrowserButton label: 'SwikiBrowser'.
-	openSwikiBrowserButton
-		backgroundColor: aColor;
-		borderWidth: 1.
-	window addSubView: openSwikiBrowserButton toRightOf: portButton.
-
-
-	"open window"
-	window controller open! !
 
 
 !IdFormatter methodsFor: 'accessing'!
@@ -4912,6 +4546,372 @@ initialize
 	self handlesMime: 'image/png'.
 	self handlesMime: 'image/jpeg'.
 	self handlesMime: 'image/gif'! !
+
+
+!SwikiLauncher methodsFor: 'accessing'!
+isShutdown
+	^isShutdown ifNil: [false] ifNotNil: [isShutdown]! !
+
+!SwikiLauncher methodsFor: 'accessing'!
+isShutdown: boolean
+	(self isShutdown = boolean) ifFalse: [
+		isShutdown _ boolean.
+		self changed: #isShutdown]! !
+
+!SwikiLauncher methodsFor: 'accessing'!
+package: aSymbol
+	package _ aSymbol! !
+
+!SwikiLauncher methodsFor: 'accessing'!
+port: anInteger
+	port _ anInteger.
+	portButton label: self portText.
+	self changed: #portText! !
+
+!SwikiLauncher methodsFor: 'accessing'!
+ports: col
+	ports _ col.
+	port _ col at: 1.! !
+
+!SwikiLauncher methodsFor: 'buttons'!
+portButton: aMorph
+	portButton _ aMorph.
+	portButton label: self portText! !
+
+!SwikiLauncher methodsFor: 'buttons'!
+portText
+	^'port: ', (port asString)! !
+
+!SwikiLauncher methodsFor: 'buttons'!
+startStopButton: aMorph
+	startStopButton _ aMorph.
+	startStopButton label: self startStopLabel! !
+
+!SwikiLauncher methodsFor: 'buttons'!
+startStopLabel
+	^(self isOn)
+		ifTrue: ['stop server']
+		ifFalse: ['start server']! !
+
+!SwikiLauncher methodsFor: 'initialize-release' stamp: 'xw 5/17/2022 20:10'!
+initialize
+	self deploymentMode.
+	self ports: ValidPorts.
+	super initialize.! !
+
+!SwikiLauncher methodsFor: 'action'!
+changePort
+	| index |
+
+	self isOn ifFalse: [index _ 1.
+		1 to: (ports size) do: [:i | (ports at: i) = port ifTrue: [index _ i + 1]].
+		(ports size < index) ifTrue: [index _ 1].
+		self port: (ports at: index)]! !
+
+!SwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:32'!
+debugMode
+	debug := true! !
+
+!SwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:32'!
+deploymentMode
+	debug := false! !
+
+!SwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 20:01'!
+isOn
+	^ server ifNil: [false] ifNotNil: [server isRunning]! !
+
+!SwikiLauncher methodsFor: 'action'!
+isPort
+	^false! !
+
+!SwikiLauncher methodsFor: 'action'!
+openSwikiBrowser
+	| shelf label |
+	label _ port = 80
+				ifTrue: ['Swiki Browser']
+				ifFalse: ['Swiki Browser: ' , port asString].
+	module ifNil: [Smalltalk isMorphic
+						ifFalse: [PopUpMenu notify: 'Start the server'].
+					^ self].
+shelf _ module shelf.
+	Smalltalk isMorphic
+		ifTrue: [(SwikiBrowser asMorphOnShelf: shelf label: label) openInWorld]
+		ifFalse: [SwikiBrowser asMVCOnShelf: shelf label: label]! !
+
+!SwikiLauncher methodsFor: 'action'!
+shutdown
+	self class shutdown! !
+
+!SwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 19:33'!
+startServer
+	"To Start Swiki on Comanche:"
+	Socket initializeNetwork.
+	module _ SwikiModule perform: package.
+	module
+		ifNil: [self error: 'Did not start!!'].
+	server := WebServer new
+		listenOn: port;
+		addService: '/' action: [:request | module processHttpRequest: request];
+		errorHandler: [:error :request | self handleError: error request: request];
+		yourself.
+	startStopButton label: self startStopLabel.
+	self class allInstancesDo: [:each | each changed: #startStopLabel.
+									each changed: #isOn]! !
+
+!SwikiLauncher methodsFor: 'action' stamp: 'xw 5/17/2022 20:03'!
+stopServer
+	"To End Swiki on Comanche:"
+	| shelf |
+	Smalltalk garbageCollect.
+	shelf _ module shelf.
+	"module"
+	(SwikiBrowser allInstances
+			select: [:browser | browser shelf = shelf]) size > 0
+		ifTrue: [PopUpMenu notify: 'Before stopping the server, you
+need to close the Swiki Brower'.
+			^ self].
+	server ifNotNil: [server destroy].
+	module _ nil.
+	Smalltalk garbageCollect.
+	startStopButton label: self startStopLabel.
+	self class allInstancesDo: [:each | each changed: #startStopLabel.
+										each changed: #isOn]! !
+
+!SwikiLauncher methodsFor: 'action'!
+toggleState
+	(self isOn)
+		ifTrue: [self stopServer]
+		ifFalse: [self startServer]! !
+
+!SwikiLauncher methodsFor: 'looks'!
+defaultBackgroundColor
+	^Color yellow! !
+
+!SwikiLauncher methodsFor: 'looks'!
+initialExtent
+	^300@50! !
+
+!SwikiLauncher methodsFor: 'errors' stamp: 'xw 5/17/2022 20:02'!
+handleError: error request: request
+        debug
+                ifTrue: [UnhandledError signalForException: error]
+                ifFalse: [
+                        server log: error.
+                        request send500Response: ''
+                ]! !
+
+!SwikiLauncher methodsFor: 'window menu' stamp: 'xw 5/17/2022 20:08'!
+addModelItemsToWindowMenu: aMenu
+	(self isOn) ifTrue: [
+		aMenu addLine.
+		aMenu add: 'open swiki browser...' target: self action: #openSwikiBrowser.
+		debug
+			ifTrue: [aMenu add: 'turn debug mode off' target: self action: #deploymentMode]
+			ifFalse: [aMenu add: 'turn debug mode on' target: self action: #debugMode]].
+	^super addModelItemsToWindowMenu: aMenu! !
+
+!SwikiLauncher methodsFor: 'updating' stamp: 'xw 5/17/2022 21:00'!
+windowIsClosing
+	self isOn ifTrue: [self stopServer]! !
+
+
+!SwikiLauncher class methodsFor: 'initialize-release'!
+initialize
+	ValidPorts _ OrderedCollection new.
+	ValidPorts add: 80.
+	ValidPorts add: 8000.
+	ValidPorts add: 8080.
+	ValidPorts add: 8888.
+	self autoCorrectMissingPages: true! !
+
+!SwikiLauncher class methodsFor: 'private'!
+shutdown
+	self allInstances do: [:launcher |
+		launcher isShutdown: true.
+		launcher isOn ifTrue: [launcher stopServer]].
+	Smalltalk snapshot: true andQuit: true.
+	self allInstances do: [:launcher |
+		launcher startServer.
+		launcher isShutdown: false]! !
+
+!SwikiLauncher class methodsFor: 'utility'!
+autoCorrectMissingPages
+	^AutoCorrectMissingPages! !
+
+!SwikiLauncher class methodsFor: 'utility'!
+autoCorrectMissingPages: aBoolean
+	AutoCorrectMissingPages _ aBoolean! !
+
+!SwikiLauncher class methodsFor: 'utility'!
+convertOldATA
+	"Convert Addresses, Templates, and Actions from Beta to Release"
+	| dir bookOrShelfDir |
+	dir _ FileDirectory default directoryNamed: 'swiki'.
+	dir directoryNames do: [:dName |
+		bookOrShelfDir _ dir directoryNamed: dName.
+		(bookOrShelfDir directoryExists: 'addresses') ifTrue: [
+			self convertOldATADirectory: (bookOrShelfDir directoryNamed: 'addresses')].
+		(bookOrShelfDir directoryExists: 'templates') ifTrue: [
+			self convertOldATADirectory: (bookOrShelfDir directoryNamed: 'templates')].
+		(bookOrShelfDir directoryExists: 'actions') ifTrue: [
+			self convertOldATADirectory: (bookOrShelfDir directoryNamed: 'actions')]]
+! !
+
+!SwikiLauncher class methodsFor: 'utility'!
+convertOldATADirectory: dir
+	| id xmlMeta subDir |
+	id _ 1.
+	xmlMeta _ WriteStream on: String new.
+	xmlMeta
+		nextPutAll: '<?xml version="1.0"?>';
+		nextPut: Character cr;
+		nextPutAll: '<meta>';
+		nextPut: Character cr.
+	dir fileNames do: [:fName |
+		((fName endsWith: '.book') or: [fName endsWith: '.page']) ifTrue: [
+			xmlMeta
+				nextPutAll: '<file id="';
+				nextPutAll: id asString;
+				nextPutAll: '" type="';
+				nextPutAll: (fName copyAfterLast: $.);
+				nextPutAll: '" name="';
+				nextPutAll: (fName copyUpTo: $.);
+				nextPutAll: '" />';
+				nextPut: Character cr.
+			dir rename: fName toBe: id asString.
+			id _ id + 1]].
+	dir directoryNames do: [:dName |
+		subDir _ dir directoryNamed: dName.
+		subDir fileNames do: [:fName |
+			((fName endsWith: '.book') or: [fName endsWith: '.page']) ifTrue: [
+				xmlMeta
+					nextPutAll: '<file id="';
+					nextPutAll: id asString;
+					nextPutAll: '" type="';
+					nextPutAll: (fName copyAfterLast: $.);
+					nextPutAll: '" name="';
+					nextPutAll: (fName copyUpTo: $.);
+					nextPutAll: '" category="';
+					nextPutAll: dName;
+					nextPutAll: '" />';
+					nextPut: Character cr.
+				dir rename: (subDir fullNameFor: fName) toBe: id asString.
+				id _ id + 1]].
+		dir deleteDirectory: dName].
+	xmlMeta
+		nextPutAll: '</meta>'.
+	(dir newFileNamed: 'meta.xml')
+		nextPutAll: xmlMeta contents;
+		close
+! !
+
+!SwikiLauncher class methodsFor: 'utility'!
+convertOldPages
+	"Conversion method used to convert old Swikis (pre-Beta 11) to the new file format.
+	This is to be run after the new server is up and running."
+	| oldAlerts newAlerts |
+	NuSwikiPage allInstances do: [:page |
+		(page settingsIncludes: 'alerts')	ifTrue: [
+			oldAlerts _ page settingsAt: 'alerts'.
+			newAlerts _ ''.
+			(oldAlerts isKindOf: String) ifFalse: [
+				oldAlerts do: [:address | newAlerts _ newAlerts, ', ', address].
+				newAlerts _ newAlerts copyFrom: 3 to: (newAlerts size).
+				page settingsAt: 'alerts' put: newAlerts]].
+		page text: (page text).
+		page write]! !
+
+!SwikiLauncher class methodsFor: 'instance creation'!
+openAsMorph
+	^self openAsMorphPackage: #swikiWebServer! !
+
+!SwikiLauncher class methodsFor: 'instance creation' stamp: 'xw 5/18/2022 08:11'!
+openAsMorphPackage: package
+	| instance window aColor startStopButton shutdownButton portButton |
+
+	"Instance of Swiki Launcher"
+	instance _ self new.
+	instance package: package.
+	"Display Morph"
+	window _ (SystemWindow labelled: 'Swiki Launcher') model: instance.
+	aColor _ Color colorFrom: instance defaultBackgroundColor.
+	"Start/Stop Button"
+	startStopButton _ PluggableButtonMorph on: instance getState: #isOn action: #toggleState.
+	instance startStopButton: startStopButton.
+	startStopButton askBeforeChanging: true.
+	startStopButton color: aColor; onColor: (Color red) offColor: (Color green).
+	window addMorph: startStopButton frame: (0@0 corner: 0.35@1).
+	"Shutdown Button"
+	shutdownButton _ PluggableButtonMorph on: instance getState: #isShutdown action: #shutdown.
+	shutdownButton label: 'save & exit'; askBeforeChanging: true.
+	shutdownButton color: aColor; onColor: aColor darker offColor: aColor.
+	window addMorph: shutdownButton frame: (0.35@0 corner: 0.7@1).
+	"Port Button"
+	portButton _ PluggableButtonMorph on: instance getState: #isPort action: #changePort.
+	instance portButton: portButton.
+	portButton askBeforeChanging: true.
+	portButton color: aColor; onColor: aColor offColor: aColor.
+	window addMorph: portButton frame: (0.7@0 corner: 1@1).
+	"Add to World"
+	window openInWorld.! !
+
+!SwikiLauncher class methodsFor: 'instance creation'!
+openMVCView
+	^self openMVCViewPackage: #swikiWebServer! !
+
+!SwikiLauncher class methodsFor: 'instance creation' stamp: 'xw 5/18/2022 08:13'!
+openMVCViewPackage: package
+	"SwikiLauncher openMVCViewPackage: #swikiWebServer."
+	| instance window aColor startStopButton shutdownButton portButton openSwikiBrowserButton |
+
+	"Instance of Swiki Launcher"
+	instance _ self new.
+	instance package: package.
+	"Display View"
+	window _ StandardSystemView new model: instance.
+	window label: 'Swiki Launcher'.
+
+	aColor _ Color colorFrom: instance defaultBackgroundColor.
+	"Start/Stop Button"
+	startStopButton _ PluggableButtonView on: instance getState: #isOn action: #toggleState label: #startStopLabel.
+	instance startStopButton: startStopButton.
+	startStopButton askBeforeChanging: true.
+	startStopButton
+		backgroundColor: aColor;
+		borderWidth: 1.
+		"; onColor: (Color red) offColor: (Color green)."
+	window addSubView: startStopButton.
+
+	"Shutdown Button"
+	shutdownButton _ PluggableButtonView on: instance getState: #isShutdown action: #shutdown.
+	shutdownButton label: 'save & exit'; askBeforeChanging: true.
+	shutdownButton
+		backgroundColor: aColor;
+		borderWidth: 1.
+		"; onColor: aColor darker offColor: aColor."
+	window addSubView: shutdownButton toRightOf: startStopButton.
+
+	"Port Button"
+	portButton _ PluggableButtonView on: instance getState: #isPort action: #changePort label: #portText.
+	instance portButton: portButton.
+	portButton askBeforeChanging: true.
+	portButton
+		backgroundColor: aColor;
+		borderWidth: 1.
+		"; onColor: aColor offColor: aColor."
+	window addSubView: portButton toRightOf: shutdownButton.
+
+	"OpenSwikiBrowserButton"
+	openSwikiBrowserButton _ PluggableButtonView on: instance getState: nil action: #openSwikiBrowser.
+	openSwikiBrowserButton label: 'SwikiBrowser'.
+	openSwikiBrowserButton
+		backgroundColor: aColor;
+		borderWidth: 1.
+	window addSubView: openSwikiBrowserButton toRightOf: portButton.
+
+
+	"open window"
+	window controller open! !
 
 
 !SwikiModule methodsFor: 'accessing'!
@@ -10148,7 +10148,7 @@ loadPage: aPage from: xml startingAt: pos0
 	pos2 _ xml findString: '</text>' startingAt: pos1.
 	aPage text: (self class textFrom: xml start: (pos1 + 6) end: (pos2 - 1))! !
 
-!XmlSwikiStorage methodsFor: 'pages'!
+!XmlSwikiStorage methodsFor: 'pages' stamp: 'xw 5/18/2022 07:53'!
 loadPages
 	"Automatically fix .tmp files"
 	| maxPage temp pages page files |
@@ -10167,7 +10167,7 @@ loadPages
 				page _ NuSwikiPage new id: id; versionId: 0; storage: self.
 				self loadPage: page.
 				pages add: page]
-			ifFalse: [ComSwikiLauncher autoCorrectMissingPages
+			ifFalse: [SwikiLauncher autoCorrectMissingPages
 				ifTrue: ["Try to load page from .old file."
 					page _ NuSwikiPage new id: id; versionId: 0; storage: self.
 					(files includes: (id asString, '.old'))
@@ -10721,10 +10721,10 @@ loadPagesFromDir: dir
 	^(self fromDir: dir) loadPages
 ! !
 
-ComSwikiLauncher initialize!
 LineFormatter initialize!
 SwikiFile initialize!
 SwikiImage initialize!
+SwikiLauncher initialize!
 NuSwikiPage initialize!
 TextFormatter initialize!
 BookTemplateFormatter initialize!
