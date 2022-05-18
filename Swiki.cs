@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 18 May 2022 at 8:12:27 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 18 May 2022 at 8:26:53 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -5191,9 +5191,9 @@ fromHttpRequest: rawRequest
 			address _ (tokens size > 2) ifTrue: [tokens at: 3] ifFalse: ['default']]
 		ifFalse: [address _ tokens at: 2]! !
 
-!HttpSwikiRequest methodsFor: 'accessing'!
+!HttpSwikiRequest methodsFor: 'accessing' stamp: 'xw 5/18/2022 20:19'!
 raw
-	^raw! !
+	"For backward compatibility"! !
 
 !HttpSwikiRequest methodsFor: 'fields'!
 fieldsAsBooleanKey: aKey
