@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 19 May 2022 at 8:19:05 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 19 May 2022 at 9:00:52 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -5454,11 +5454,11 @@ user
 	"Give IP address since this is the closest that an HttpRequest without login, password."
 	^raw stream socket remoteAddress! !
 
-!HttpSwikiRequest methodsFor: 'utility'!
+!HttpSwikiRequest methodsFor: 'utility' stamp: 'xw 5/19/2022 20:56'!
 userID
 	"Should be refactored"
 	| userID i |
-	userID _ raw header at: 'authorization' ifAbsent: [^nil].
+	userID := raw headerAt: 'authorization' ifAbsent: [^nil].
 	(userID notNil and: [(i _ userID findString: 'Basic ') > 0])
 		ifTrue: [userID _ userID copyFrom: i+6 to: userID size]
 		ifFalse: [userID _ nil].
