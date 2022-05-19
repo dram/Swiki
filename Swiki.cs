@@ -1,4 +1,4 @@
-﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 18 May 2022 at 8:53:26 pm'!
+﻿'From Squeak6.0alpha of 6 May 2022 [latest update: #21736] on 19 May 2022 at 8:19:05 pm'!
 Object subclass: #AniAccess
 	instanceVariableNames: 'allLevel usersLevel groupToLevel'
 	classVariableNames: ''
@@ -269,6 +269,11 @@ In the folder for the swiki, several things are of significants:
 	groups			This directory contains the access control groups for AniAniWeb
 !
 
+Object subclass: #SwikiMultipart
+	instanceVariableNames: 'content headers parameters'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Swiki-WebServer'!
 Object subclass: #SwikiPageContext
 	instanceVariableNames: 'request response shelf book page'
 	classVariableNames: ''
@@ -5003,6 +5008,27 @@ swikiWebServer
 	^instance! !
 
 
+!SwikiMultipart methodsFor: 'initializing' stamp: 'xw 5/19/2022 20:12'!
+headers: aDictionary parameters: anotherDictionary content: aString
+	headers := aDictionary.
+	parameters := anotherDictionary.
+	content := aString! !
+
+!SwikiMultipart methodsFor: 'accessing' stamp: 'xw 5/19/2022 20:11'!
+fileName
+	^ parameters at: #filename ifAbsent: [nil]! !
+
+!SwikiMultipart methodsFor: 'accessing' stamp: 'xw 5/19/2022 20:13'!
+saveToStream: aStream
+	aStream binary.
+	aStream nextPutAll: content! !
+
+
+!SwikiMultipart class methodsFor: 'instance creation' stamp: 'xw 5/19/2022 19:33'!
+headers: aDictionary parameters: anotherDictionary content: aString
+	^ self new headers: aDictionary parameters: anotherDictionary content: aString! !
+
+
 !SwikiRSSModule methodsFor: 'accessing'!
 rssAtUrl: url expireHours: hours
 	| rss new |
@@ -5197,6 +5223,12 @@ header
 	dict := Dictionary new.
 	raw headersDo: [:key :value | dict at: key put: value].
 	^ dict! !
+
+!HttpSwikiRequest methodsFor: 'accessing' stamp: 'xw 5/19/2022 20:15'!
+multipartFormFieldsDo: aBlock
+	raw multipartFieldsDo: [:headers :parameters :content |
+		aBlock value: (SwikiMultipart headers: headers parameters: parameters content: content)
+	]! !
 
 !HttpSwikiRequest methodsFor: 'accessing' stamp: 'xw 5/18/2022 20:19'!
 raw
